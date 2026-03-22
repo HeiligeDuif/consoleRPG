@@ -1,8 +1,0 @@
-﻿  consoleGame.cpp
-C:\programming\consoleGame\consoleGame\consoleGame.cpp(94,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\programming\consoleGame\consoleGame\consoleGame.cpp(139,27): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\programming\consoleGame\consoleGame\consoleGame.cpp(312,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\programming\consoleGame\consoleGame\consoleGame.cpp(221,1): warning C4715: 'choiceManager::correctInput': not all control paths return a value
-  consoleGame.vcxproj -> C:\programming\consoleGame\x64\Debug\consoleGame.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
