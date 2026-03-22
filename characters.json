@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Rogue",
+    "hpMax": 10,
+    "attack": 5
+  },
+  {
+    "name": "Ranger",
+    "hpMax": 12,
+    "attack": 4
+  },
+  {
+    "name": "Warrior",
+    "hpMax": 15,
+    "attack": 3
+  },
+  {
+    "name": "Duif",
+    "hpMax": 1.3333,
+    "attack": 6.66
+  }
+]
