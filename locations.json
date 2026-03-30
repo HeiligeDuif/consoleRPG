@@ -1,0 +1,34 @@
+[
+  {
+    "name": "village",
+    "description": "You enter a village. You look around and see a couple of farmers, a pub and a shop.",
+    "possibleActions": [
+      {
+        "nameOfAction": "Go to the shop",
+        "resultOfAction": "basicCombat"
+      },
+      {
+        "nameOfAction": "Leave the village",
+        "resultOfAction": "basicCombat"
+      }
+    ]
+  },
+  {
+    "name": "forest",
+    "description": "You follow the path through a forest. There is not much to see through the dense vegetation...",
+    "possibleActions": [
+      {
+        "nameOfAction": "Search for enemies to kill",
+        "resultOfAction":  "basicCombat()"
+      },
+      {
+        "nameOfAction": "Look for ingredients",
+        "resultOfAction": "basicCombat()"
+      },
+      {
+        "nameOfAction": "Leave the forest",
+        "resultOfAction": "basicCombat()"
+      }
+    ]
+  }
+]

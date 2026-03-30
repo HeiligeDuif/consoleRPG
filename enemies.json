@@ -3,5 +3,10 @@
     "name": "Strange looking Hobo",
     "hpMax": 4,
     "attack": 2
+  },
+  {
+    "name": "Small Slime",
+    "hpMax": 6,
+    "attack": 1
   }
 ]
