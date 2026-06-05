@@ -19,15 +19,15 @@
     "possibleActions": [
       {
         "nameOfAction": "Search for enemies to kill",
-        "resultOfAction":  "basicCombat()"
+        "resultOfAction":  "basicCombat"
       },
       {
         "nameOfAction": "Look for ingredients",
-        "resultOfAction": "basicCombat()"
+        "resultOfAction": "basicCombat"
       },
       {
         "nameOfAction": "Leave the forest",
-        "resultOfAction": "basicCombat()"
+        "resultOfAction": "basicCombat"
       }
     ]
   }

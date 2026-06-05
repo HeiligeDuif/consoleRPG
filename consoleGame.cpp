@@ -16,6 +16,8 @@
 #include <thread>
 #include <limits>
 #include <unordered_map>
+#include "consoleGame.hpp"
+#include <functional>
 
 #ifdef _WIN32
 #define NOMINMAX
@@ -72,6 +74,8 @@ struct location
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions)
+
+gameDataCreation gameData;
 
 class choiceManager
 {
@@ -298,7 +302,6 @@ private:
     void mainLoop()
     {
         splitOptions(multipleWaySplit(1));
-		basicCombat();
     }
 
     int multipleWaySplit(int AmountOfRoadChoices)
@@ -327,6 +330,10 @@ private:
         }
         char chosenOption = correctInput();
         std::cout << "You chose option: " << chosenOption << "\n";
+        if (gameData.locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
+        {
+            gameData.locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction]();
+        }
     }
 
     void basicCombat()
