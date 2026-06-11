@@ -47,17 +47,16 @@ inline void wait(int milliseconds)
 using json = nlohmann::json;
 
 struct character {
-    std::string name = "name";
-    int hpMax = 0;
-    int attack = 0;
+    std::string name;
+    int hpMax;
+    int attack;
 };
 
 struct enemy
 {
-    std::string name = "name";
-    int hpMax = 0;
-    int attack = 0;
-
+    std::string name;
+    int hpMax;
+    int attack;
 };
 
 struct action
@@ -66,18 +65,58 @@ struct action
     std::string resultOfAction;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
-
 struct location
 {
-    std::string name = "name";
-    std::string description = "description";
+    std::string name;
+    std::string description;
     std::vector<action> possibleActions;
 };
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions)
+
+extern uint32_t seedValue;
+extern int amountOfChoices;
+extern std::vector<char> charPossibilities;
+
+extern std::vector<enemy> enemies;
+extern std::vector<character> characters;
+extern std::vector<location> locations;
+
+extern enemy currentCombatEnemy;
+
+extern character player;
+
+extern int playerCurrentHP;
+extern int currentCombatEnemyCurrentHP;
+
+class setupAndUtility
+{
+public:
+    void vectorCreation(size_t);
+    char correctInput();
+    void startGame();
+private:
+    void setConsoleOutputUTF8();
+    void printAscii(std::string);
+    void loadEnemies();
+    void loadCharacters();
+    void loadLocations();
+    void setseed();
+    void setClass();
+};
+
+class mainGameLoop
+{
+public:
+    void mainLoop();
+    int multipleWaySplit(int);
+    void splitOptions(int);
+private:
+
+};
 
 class gameDataCreation
 {
@@ -87,4 +126,15 @@ public:
     std::unordered_map<std::string, std::function<void()>> locationActions;
 };
 
+class Combat 
+{
+public:
+    void basicCombat();
+private:
+    void selectEnemy();
+    void combatTurn();
+    void playerCombatTurn(bool& playerBlocking);
+    void enemyIntent();
+    void enemyCombatTurn();
+};
 #endif

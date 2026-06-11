@@ -1,10 +1,5 @@
 #include "consoleGame.hpp"
 
-void basicCombat() 
-{
-
-}
-
 void shopEntry()
 {
 
@@ -13,7 +8,7 @@ void shopEntry()
 gameDataCreation::gameDataCreation()
 {
     locationActions = {
-        {"basicCombat", basicCombat},
+        {"basicCombat", []() {Combat currentFight; currentFight.basicCombat(); }},
         { "shopEntry", shopEntry }
     };
 }
