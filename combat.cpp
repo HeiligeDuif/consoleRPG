@@ -1,7 +1,8 @@
 #include "consoleGame.hpp"
 enemy currentCombatEnemy;
+char playerAction;
 
-    void Combat::basicCombat()
+    void combat::basicCombat()
     {
         std::cout << "You see an enemy. Naturally you want to kill it. \n";
         selectEnemy();
@@ -23,14 +24,14 @@ enemy currentCombatEnemy;
 
     }
 
-    void Combat::selectEnemy()
+    void combat::selectEnemy()
     {
         currentCombatEnemy = enemies[0];
         currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
 
     }
 
-    void Combat::combatTurn()
+    void combat::combatTurn()
     {
         bool playerBlocking = false;
         playerCombatTurn(playerBlocking);
@@ -58,7 +59,7 @@ enemy currentCombatEnemy;
         std::cout << "you have " << playerCurrentHP << " HP left.\n";
     }
 
-    void Combat::playerCombatTurn(bool& playerBlocking)
+    void combat::playerCombatTurn(bool& playerBlocking)
     {
         setupAndUtility util;
         std::vector<std::string> playerCombatOptions =
@@ -81,21 +82,24 @@ enemy currentCombatEnemy;
         case 'A':
             std::cout << "You attack the enemy for " << player.attack << " damage.\n";
             currentCombatEnemyCurrentHP -= player.attack;
+            playerAction = 'A';
             break;
 
         case 'B':
             std::cout << "You brace yourself...\n";
             playerBlocking = true;
+            playerAction = 'B';
             break;
 
         case 'C':
+            playerAction = 'C';
             break;
         }
 
         return;
     }
 
-    void Combat::enemyIntent()
+    void combat::enemyIntent()
     {
         std::vector<std::string> enemyCombatOptions =
         {
@@ -105,7 +109,7 @@ enemy currentCombatEnemy;
         };
     }
 
-    void Combat::enemyCombatTurn()
+    void combat::enemyCombatTurn()
     {
 
     }

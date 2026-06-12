@@ -156,6 +156,6 @@ void gameDataCreation::locationAction()
 {
     locationActions = {
         {"basicCombat", []() {Combat currentFight; currentFight.basicCombat(); }},
-        { "shopEntry", shopEntry }
+        { "shopEntry", shopEntry}
     };
 }

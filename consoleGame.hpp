@@ -123,8 +123,6 @@ public:
     void setseed();
     void setClass();
     void locationAction();
-
-    std::unordered_map<std::string, std::function<void()>> locationActions;
 };
 
 class Combat 

@@ -5,7 +5,7 @@
     "possibleActions": [
       {
         "nameOfAction": "Go to the shop",
-        "resultOfAction": "basicCombat"
+        "resultOfAction": "shopEntry"
       },
       {
         "nameOfAction": "Leave the village",
