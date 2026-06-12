@@ -57,6 +57,7 @@ struct enemy
     std::string name;
     int hpMax;
     int attack;
+    int goldReward;
 };
 
 struct action
@@ -72,10 +73,19 @@ struct location
     std::vector<action> possibleActions;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack)
+struct item
+{
+    std::string name;
+    std::string bonus;
+    int value;
+    int price;
+};
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 
 extern uint32_t seedValue;
 extern int amountOfChoices;
@@ -85,12 +95,14 @@ extern std::vector<enemy> enemies;
 extern std::vector<character> characters;
 extern std::vector<location> locations;
 extern std::map<std::string, std::function<void()>> locationActions;
+extern std::vector<item> items;
 
 extern enemy currentCombatEnemy;
 
 extern character player;
 
 extern int playerCurrentHP;
+extern int playerCurrentGold;
 extern int currentCombatEnemyCurrentHP;
 
 class setupAndUtility
@@ -120,12 +132,13 @@ public:
     void loadEnemies();
     void loadCharacters();
     void loadLocations();
+    void loadItems();
     void setseed();
     void setClass();
     void locationAction();
 };
 
-class Combat 
+class combat 
 {
 public:
     void basicCombat();

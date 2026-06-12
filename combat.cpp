@@ -1,6 +1,7 @@
 #include "consoleGame.hpp"
 enemy currentCombatEnemy;
 char playerAction;
+int placeHolderEnemySelector = 1;
 
     void combat::basicCombat()
     {
@@ -26,9 +27,9 @@ char playerAction;
 
     void combat::selectEnemy()
     {
-        currentCombatEnemy = enemies[0];
+        currentCombatEnemy = enemies[placeHolderEnemySelector];
         currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
-
+        std::cout << "your current enemy is: " << enemies[placeHolderEnemySelector].name << "." << "\n";
     }
 
     void combat::combatTurn()
@@ -40,6 +41,12 @@ char playerAction;
         {
             currentCombatEnemyCurrentHP = 0;
             std::cout << "The enemy is dead!\n";
+
+            mainGameLoop returnToRoad;
+            std::cout << "You received " << currentCombatEnemy.goldReward << " gold!" << "\n";
+            playerCurrentGold = playerCurrentGold + currentCombatEnemy.goldReward;
+            std::cout << "You now have " << playerCurrentGold << " gold!" << "\n";
+            returnToRoad.mainLoop();
             return;
         }
 
@@ -111,5 +118,16 @@ char playerAction;
 
     void combat::enemyCombatTurn()
     {
+        switch (playerAction)
+        {
+        case 'A':       //player attacks
+            
+            break;
+        case 'B':       //player blocks
 
+            break;
+        case 'C':       //player uses ability
+
+            break;
+        }
     }

@@ -7,6 +7,7 @@ void setupAndUtility::startGame()
     gameData.loadCharacters();
     gameData.loadLocations();
     gameData.locationAction();
+    gameData.loadItems();
 
     gameData.setseed();
 

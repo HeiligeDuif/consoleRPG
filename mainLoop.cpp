@@ -36,16 +36,6 @@ void mainGameLoop::splitOptions(int chosenRoad)
     char chosenOption = util.correctInput();
     std::cout << "You chose option: " << chosenOption << "\n";
 
-    //test if the map actually gets filled
-    std::cout << "Map size: " << locationActions.size() << '\n';
-
-    auto& action =
-        locations[chosenRoad]
-        .possibleActions[chosenOption - 'A']
-        .resultOfAction;
-
-    std::cout << action << '\n';
-
     if (locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
     {
         locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction](); //execute function tied to string in JSON file

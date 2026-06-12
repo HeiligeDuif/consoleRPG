@@ -3,6 +3,7 @@
 
 int amountOfChoices = 0;
 int playerCurrentHP = 1;
+int playerCurrentGold = 0;
 int currentCombatEnemyCurrentHP = 1;
 uint32_t seedValue;
 
@@ -11,6 +12,7 @@ std::vector<character> characters;
 std::vector<enemy> enemies;
 std::vector<location> locations;
 std::vector<action> actions;
+std::vector<item> items;
 character player;
 
 std::map<std::string, std::function<void()>> locationActions;
@@ -73,13 +75,32 @@ void gameDataCreation::loadLocations()
     file >> j;
 
     locations = j.get<std::vector<location>>();
-    size_t amountOfLocations = locations.size();
+    size_t amountOfItems = locations.size();
 
-    util.vectorCreation(amountOfLocations);
+    util.vectorCreation(amountOfItems);
 
     for (const auto& c : locations) {
         std::cout << "Succesfully loaded locations: " << c.name << "\n";
         wait(20);
+    }
+    EMPTYSCREEN();
+}
+
+void gameDataCreation::loadItems()
+{
+    std::ifstream file("items.json");
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Can't find JSON file!");;
+    }
+    json j;
+    file >> j;
+
+    items = j.get<std::vector<item>>();
+
+    for (const auto& c : items) {
+        std::cout << "Succesfully loaded items: " << c.name << " (bonus type: " << c.bonus << ")" << "\n";
+        wait(40);
     }
     EMPTYSCREEN();
 }
@@ -150,12 +171,13 @@ void gameDataCreation::setClass()
 void shopEntry()
 {
     std::cout << "Welcome to the shop!\n";
+    std::cout << "We have these items for sale:" << "\n";
 }
 
 void gameDataCreation::locationAction()
 {
     locationActions = {
-        {"basicCombat", []() {Combat currentFight; currentFight.basicCombat(); }},
+        {"basicCombat", []() {combat currentFight; currentFight.basicCombat(); }},
         { "shopEntry", shopEntry}
     };
 }
