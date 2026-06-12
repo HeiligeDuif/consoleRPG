@@ -1,5 +1,5 @@
 #include "consoleGame.hpp"
-
+enemy currentCombatEnemy;
 
     void Combat::basicCombat()
     {
@@ -60,6 +60,7 @@
 
     void Combat::playerCombatTurn(bool& playerBlocking)
     {
+        setupAndUtility util;
         std::vector<std::string> playerCombatOptions =
         {
             "Attack",
@@ -67,7 +68,7 @@
             "Ability"
         };
 
-        vectorCreation(playerCombatOptions.size());
+        util.vectorCreation(playerCombatOptions.size());
 
         std::cout << "It is your turn, choose your action:\n";
         for (int i = 0; i < playerCombatOptions.size(); i++)
@@ -75,7 +76,7 @@
             std::cout << charPossibilities[i] << ". " << playerCombatOptions[i] << "\n";
         }
 
-        switch (correctInput())
+        switch (util.correctInput())
         {
         case 'A':
             std::cout << "You attack the enemy for " << player.attack << " damage.\n";

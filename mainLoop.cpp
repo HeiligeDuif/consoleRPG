@@ -7,7 +7,9 @@ void mainGameLoop::mainLoop()
 
 int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 {
-    vectorCreation(AmountOfRoadChoices);
+    setupAndUtility util;
+
+    util.vectorCreation(AmountOfRoadChoices);
 
     std::cout << "You arrive at a split in the road. There are " << AmountOfRoadChoices << " Possible ways. Which one will you take?\n";
 
@@ -16,23 +18,25 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
         std::cout << "Road " << charPossibilities[i] << " to " << locations[i].name << ".\n";
     }
 
-    char roadChoiceMain = correctInput();
+    char roadChoiceMain = util.correctInput();
     std::cout << "You chose road: " << roadChoiceMain << "\n";
     return roadChoiceMain - 'A';
 }
 
 void mainGameLoop::splitOptions(int chosenRoad)
 {
-    vectorCreation(locations[chosenRoad].possibleActions.size());
+    setupAndUtility util;
+
+    util.vectorCreation(locations[chosenRoad].possibleActions.size());
     std::cout << "What do you want to do?\n";
     for (int i = 0; i < locations[chosenRoad].possibleActions.size(); i++)
     {
         std::cout << charPossibilities[i] << ". " << locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
     }
-    char chosenOption = correctInput();
+    char chosenOption = util.correctInput();
     std::cout << "You chose option: " << chosenOption << "\n";
-    if (gameData.locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
+    if (locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
     {
-        gameData.locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction]();
+        locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction]();
     }
 }

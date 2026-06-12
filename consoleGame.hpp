@@ -84,6 +84,7 @@ extern std::vector<char> charPossibilities;
 extern std::vector<enemy> enemies;
 extern std::vector<character> characters;
 extern std::vector<location> locations;
+extern std::map<std::string, std::function<void()>> locationActions;
 
 extern enemy currentCombatEnemy;
 
@@ -98,14 +99,9 @@ public:
     void vectorCreation(size_t);
     char correctInput();
     void startGame();
-private:
-    void setConsoleOutputUTF8();
     void printAscii(std::string);
-    void loadEnemies();
-    void loadCharacters();
-    void loadLocations();
-    void setseed();
-    void setClass();
+private:
+    void setConsoleOutputUTF8();  
 };
 
 class mainGameLoop
@@ -121,7 +117,12 @@ private:
 class gameDataCreation
 {
 public:
-    gameDataCreation();
+    void loadEnemies();
+    void loadCharacters();
+    void loadLocations();
+    void setseed();
+    void setClass();
+    void locationAction();
 
     std::unordered_map<std::string, std::function<void()>> locationActions;
 };
