@@ -82,3 +82,13 @@ char  setupAndUtility::correctInput()
     } while (succesfulInput != true);
 }
 
+void setupAndUtility::yesOrNoFunction()
+{
+    setupAndUtility util;
+    util.vectorCreation(yesOrNo.size());
+
+    for (int i = 0; i < yesOrNo.size(); i++)
+    {
+        std::cout << charPossibilities[i] << ". " << yesOrNo[i] << "\n";
+    }
+}

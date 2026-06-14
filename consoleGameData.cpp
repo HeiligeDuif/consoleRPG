@@ -110,18 +110,8 @@ void gameDataCreation::setseed()
     setupAndUtility util;
 
     std::cout << "custom seed?\n";
-    std::vector<std::string> yesOrNo =
-    {
-        "Yes",
-        "No"
-    };
 
-    util.vectorCreation(yesOrNo.size());
-
-    for (int i = 0; i < yesOrNo.size(); i++)
-    {
-        std::cout << charPossibilities[i] << ". " << yesOrNo[i] << "\n";
-    }
+    util.yesOrNoFunction();
 
     util.printAscii("warrior.txt");
 
@@ -168,16 +158,12 @@ void gameDataCreation::setClass()
     playerCurrentHP = player.hpMax;
 }
 
-void shopEntry()
-{
-    std::cout << "Welcome to the shop!\n";
-    std::cout << "We have these items for sale:" << "\n";
-}
-
 void gameDataCreation::locationAction()
 {
+    
     locationActions = {
         {"basicCombat", []() {combat currentFight; currentFight.basicCombat(); }},
-        { "shopEntry", shopEntry}
+        { "shopEntry", []() {activities activity; activity.shopEntry(); }}
     };
 }
+

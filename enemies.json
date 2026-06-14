@@ -10,5 +10,11 @@
     "hpMax": 6,
     "attack": 1,
     "goldReward": 1
+  },
+  {
+    "name": "Bamibal",
+    "hpMax": 12231,
+    "attack": 1232,
+    "goldReward": 156235452
   }
 ]

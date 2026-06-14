@@ -15,7 +15,7 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 
     for (int i = 0; i < AmountOfRoadChoices; i++)
     {
-        std::cout << "Road " << charPossibilities[i] << " to " << locations[i].name << ".\n";
+        std::cout << charPossibilities[i] << ". " << "Road " << charPossibilities[i] << " to " << locations[i].name << ".\n";
     }
 
     char roadChoiceMain = util.correctInput();

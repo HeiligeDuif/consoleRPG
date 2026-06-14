@@ -105,6 +105,14 @@ extern int playerCurrentHP;
 extern int playerCurrentGold;
 extern int currentCombatEnemyCurrentHP;
 
+extern int shopChoiceInt;
+
+static std::vector<std::string> yesOrNo =
+{
+    "Yes",
+    "No"
+};
+
 class setupAndUtility
 {
 public:
@@ -112,6 +120,7 @@ public:
     char correctInput();
     void startGame();
     void printAscii(std::string);
+    void yesOrNoFunction();
 private:
     void setConsoleOutputUTF8();  
 };
@@ -149,4 +158,12 @@ private:
     void enemyIntent();
     void enemyCombatTurn();
 };
+
+class activities
+{
+public:
+    void shopEntry();
+    void canPlayerBuy(int price);
+};
+
 #endif
