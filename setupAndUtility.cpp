@@ -16,7 +16,10 @@ void setupAndUtility::startGame()
     std::cout << "You are a traveller from another world...\n" << "Your only purpose is to survive...\n" << "Good luck.\n";
 
     mainGameLoop mainLoop;
-    mainLoop.mainLoop();
+    while (playerCurrentHP > 0)
+    {
+        mainLoop.mainLoop();
+    }
 }
 
 void setupAndUtility::setConsoleOutputUTF8()

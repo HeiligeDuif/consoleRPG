@@ -46,7 +46,6 @@ int placeHolderEnemySelector = 1;
             std::cout << "You received " << currentCombatEnemy.goldReward << " gold!" << "\n";
             playerCurrentGold = playerCurrentGold + currentCombatEnemy.goldReward;
             std::cout << "You now have " << playerCurrentGold << " gold!" << "\n";
-            returnToRoad.mainLoop();
             return;
         }
 
