@@ -113,8 +113,10 @@ static std::vector<std::string> yesOrNo =
     "No"
 };
 
+extern std::map<std::string, int*> valueAndStatConnector;
+
 class setupAndUtility
-{
+{ 
 public:
     void vectorCreation(size_t);
     char correctInput();
@@ -145,6 +147,7 @@ public:
     void setseed();
     void setClass();
     void locationAction();
+    void valueAndStatConnectorFunction();
 };
 
 class combat 
@@ -163,7 +166,7 @@ class activities
 {
 public:
     void shopEntry();
-    void canPlayerBuy(int price);
+    void canPlayerBuy();
 };
 
 #endif

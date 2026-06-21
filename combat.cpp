@@ -22,7 +22,6 @@ int placeHolderEnemySelector = 1;
                 break;
             }
         }
-
     }
 
     void combat::selectEnemy()
@@ -56,7 +55,8 @@ int placeHolderEnemySelector = 1;
 
             playerCurrentHP -= currentCombatEnemy.attack / 2;
         }
-        else {
+        else 
+        {
             std::cout << "The " << currentCombatEnemy.name << " attacks you for " << currentCombatEnemy.attack << " damage.\n";
 
             playerCurrentHP -= currentCombatEnemy.attack;

@@ -16,6 +16,7 @@ std::vector<item> items;
 character player;
 
 std::map<std::string, std::function<void()>> locationActions;
+std::map<std::string, int*> valueAndStatConnector;
 
 void gameDataCreation::loadEnemies()
 {
@@ -128,6 +129,10 @@ void gameDataCreation::setseed()
         seedValue = dist6(rng);
     }
     std::cout << "Seed:" << std::setfill('0') << std::setw(8) << seedValue << "\n";
+    if(seedValue==11111111)
+    {
+        playerCurrentGold = 100000;
+    }
     EMPTYSCREEN();
 }
 
@@ -161,9 +166,19 @@ void gameDataCreation::setClass()
 void gameDataCreation::locationAction()
 {
     
-    locationActions = {
+    locationActions = 
+    {
         {"basicCombat", []() {combat currentFight; currentFight.basicCombat(); }},
         { "shopEntry", []() {activities activity; activity.shopEntry(); }}
+    };
+}
+
+void gameDataCreation::valueAndStatConnectorFunction()
+{
+    valueAndStatConnector =
+    {
+        {"hp", &player.hpMax},
+        {"attack", &player.attack}
     };
 }
 
