@@ -97,3 +97,13 @@ void setupAndUtility::yesOrNoFunction()
         std::cout << charPossibilities[i] << ". " << yesOrNo[i] << "\n";
     }
 }
+
+int setupAndUtility::seedIteration(int divisionAmount)
+{
+    seedValue= (seedValue * 1664525) + 1013904223; //Definitely didn't steal this
+    double seedDivision;
+    seedDivision = seedValue / 4294967296.0; //divide by max uint_32 value
+    int randomizedOutput;
+    randomizedOutput = seedDivision * divisionAmount;
+    return randomizedOutput;
+}

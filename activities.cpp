@@ -1,7 +1,5 @@
 #include "consoleGame.hpp"
 
-int shopChoiceInt;
-
 void activities::shopEntry()
 {
     setupAndUtility util;
@@ -22,14 +20,16 @@ void activities::shopEntry()
         util.vectorCreation(items.size() + 1); //reset after yesOrNo changed it
         for (int i = 0; i < items.size(); i++)
         {
-            std::cout << charPossibilities[i] << ". " << items[i].name << " for " << items[i].price << "gold." << "\n";
+            std::cout << charPossibilities[i] << ". " << items[i].name << " for " << items[i].price << " gold." << "\n";
         }
 
         std::cout << charPossibilities[static_cast<int>(items.size())] << ". " << "Nevermind" << "\n";
 
+        int shopChoiceInt;
+
         char shopChoice = util.correctInput();
         shopChoiceInt = static_cast<int>(shopChoice-'A');
-        canPlayerBuy();
+        canPlayerBuy(shopChoiceInt);
     }
     else 
     {
@@ -37,14 +37,14 @@ void activities::shopEntry()
     }
 }
 
-void activities::canPlayerBuy() 
+void activities::canPlayerBuy(int shopChoice) 
 {
-    if (items[shopChoiceInt].price < playerCurrentGold)
+    if (items[shopChoice].price < playerCurrentGold)
     {
-        playerCurrentGold = playerCurrentGold - items[shopChoiceInt].price;
-        if (valueAndStatConnector.contains(items[shopChoiceInt].bonus))
+        playerCurrentGold = playerCurrentGold - items[shopChoice].price;
+        if (valueAndStatConnector.contains(items[shopChoice].bonus))
         {
-            *valueAndStatConnector[items[shopChoiceInt].bonus] = *valueAndStatConnector[items[shopChoiceInt].bonus] + items[shopChoiceInt].value;
+            *valueAndStatConnector[items[shopChoice].bonus] = *valueAndStatConnector[items[shopChoice].bonus] + items[shopChoice].value;
             //pointer to specific player struct
         }
         else
@@ -52,7 +52,7 @@ void activities::canPlayerBuy()
             std::cout << RED << "ERROR: literally unplayable, devs pls fix" << "\n" << RESET;
         }
         std::cout << "You now have: " << playerCurrentGold << " gold." << "\n";
-        std::cout << "You know have: " << *valueAndStatConnector[items[shopChoiceInt].bonus] << " " << items[shopChoiceInt].bonus << "." << "\n";
+        std::cout << "You know have: " << *valueAndStatConnector[items[shopChoice].bonus] << " " << items[shopChoice].bonus << "." << "\n";
     }
     else
     {

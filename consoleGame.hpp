@@ -58,6 +58,9 @@ struct enemy
     int hpMax;
     int attack;
     int goldReward;
+    int difficultyIndicator;
+    std::string faction;
+    std::string region;
 };
 
 struct action
@@ -123,6 +126,7 @@ public:
     void startGame();
     void printAscii(std::string);
     void yesOrNoFunction();
+    int seedIteration(int divisionAmount);
 private:
     void setConsoleOutputUTF8();  
 };
@@ -166,7 +170,7 @@ class activities
 {
 public:
     void shopEntry();
-    void canPlayerBuy();
+    void canPlayerBuy(int shopChoice);
 };
 
 #endif

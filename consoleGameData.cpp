@@ -6,6 +6,7 @@ int playerCurrentHP = 1;
 int playerCurrentGold = 0;
 int currentCombatEnemyCurrentHP = 1;
 uint32_t seedValue;
+uint32_t seedStart;
 
 std::vector<char> charPossibilities;
 std::vector<character> characters;
@@ -133,6 +134,7 @@ void gameDataCreation::setseed()
     {
         playerCurrentGold = 100000;
     }
+    seedStart = seedValue;
     EMPTYSCREEN();
 }
 
