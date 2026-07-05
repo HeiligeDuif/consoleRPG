@@ -28,6 +28,14 @@ char playerAction;
         setupAndUtility util;
         int randomEnemy = util.seedIteration(enemies.size());
         currentCombatEnemy = enemies[randomEnemy];
+        if (regionAssigner.contains(enemies[randomEnemy].region))
+        {
+
+        }
+        else
+        {
+            std::cout << RED << "ERROR: This is not supposed to happen, blame the dev" << RESET << "\n";
+        }
         currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
         std::cout << "your current enemy is: " << enemies[randomEnemy].name << "." << "\n";
     }

@@ -21,17 +21,19 @@
 #include <limits>
 #include <unordered_map>
 #include <functional>
+#include <memory>
 
 #ifdef _WIN32
 #define NOMINMAX
 #include <windows.h>
 #endif
 
-
 //text colours
 inline const char* RED = "\033[31m";
 inline const char* BLUE = "\033[34m";
 inline const char* RESET = "\033[0m";
+
+std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
 inline void EMPTYSCREEN()
 {
@@ -46,13 +48,24 @@ inline void wait(int milliseconds)
 
 using json = nlohmann::json;
 
-struct character {
+struct structSearcher
+{
+    virtual ~structSearcher() = default;
+    virtual bool matches(const std::string& searchItem) const = 0;  
+};
+
+struct character:structSearcher
+{
     std::string name;
     int hpMax;
     int attack;
+
+    bool matches(const std::string& searchItem) const override {
+        return name == searchItem;
+    }
 };
 
-struct enemy
+struct enemy :structSearcher
 {
     std::string name;
     int hpMax;
@@ -61,6 +74,10 @@ struct enemy
     int difficultyIndicator;
     std::string faction;
     std::string region;
+
+    bool matches(const std::string& searchItem) const override {
+        return name == searchItem;
+    }
 };
 
 struct action
@@ -69,22 +86,30 @@ struct action
     std::string resultOfAction;
 };
 
-struct location
+struct location:structSearcher
 {
     std::string name;
     std::string description;
     std::vector<action> possibleActions;
+
+    bool matches(const std::string& searchItem) const override {
+        return name == searchItem;
+    }
 };
 
-struct item
+struct item :structSearcher
 {
     std::string name;
     std::string bonus;
     int value;
     int price;
+
+    bool matches(const std::string& searchItem) const override {
+        return name == searchItem;
+    }
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, difficultyIndicator, faction, region)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions)
@@ -117,6 +142,8 @@ static std::vector<std::string> yesOrNo =
 };
 
 extern std::map<std::string, int*> valueAndStatConnector;
+extern std::map<std::string, int*> factionAssigner;
+extern std::map<std::string, int*> regionAssigner;
 
 class setupAndUtility
 { 
@@ -127,6 +154,7 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
+    void sampleMaker(std::vector<structSearcher> list);
 private:
     void setConsoleOutputUTF8();  
 };
@@ -151,7 +179,7 @@ public:
     void setseed();
     void setClass();
     void locationAction();
-    void valueAndStatConnectorFunction();
+    void unorderedMapMaker();
 };
 
 class combat 

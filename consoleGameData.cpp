@@ -18,6 +18,11 @@ character player;
 
 std::map<std::string, std::function<void()>> locationActions;
 std::map<std::string, int*> valueAndStatConnector;
+std::map<std::string, int*> factionAssigner;
+std::map<std::string, int*> regionAssigner;
+
+std::string region;
+std::string faction;
 
 void gameDataCreation::loadEnemies()
 {
@@ -175,12 +180,22 @@ void gameDataCreation::locationAction()
     };
 }
 
-void gameDataCreation::valueAndStatConnectorFunction()
+void gameDataCreation::unorderedMapMaker()
 {
     valueAndStatConnector =
     {
         {"hp", &player.hpMax},
         {"attack", &player.attack}
     };
+    /*
+    factionAssigner =
+    {
+        {"city", }
+    };
+    regionAssigner =
+    {
+        {"street", }
+    };
+    */
 }
 

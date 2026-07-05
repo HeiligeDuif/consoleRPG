@@ -9,7 +9,7 @@ void setupAndUtility::startGame()
     gameData.locationAction();
     
     gameData.loadItems();
-    gameData.valueAndStatConnectorFunction();
+    gameData.unorderedMapMaker();
 
     gameData.setseed();
 
@@ -106,4 +106,9 @@ int setupAndUtility::seedIteration(int divisionAmount)
     int randomizedOutput;
     randomizedOutput = seedDivision * divisionAmount;
     return randomizedOutput;
+}
+
+void setupAndUtility::sampleMaker(std::vector<structSearcher> list)
+{
+    
 }
