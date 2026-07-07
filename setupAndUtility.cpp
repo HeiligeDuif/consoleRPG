@@ -108,16 +108,27 @@ int setupAndUtility::seedIteration(int divisionAmount)
     return randomizedOutput;
 }
 
-void setupAndUtility::sampleMaker()
+template <typename T, typename Predicate>
+std::vector<T*> filterGameData(const std::vector<std::unique_ptr<structSearcher>>& database, Predicate selectionRequirements)
 {
-    std::vector<structSearcher> list;
-    for (const std::unique_ptr<structSearcher>& searchQuery : gamedataBase)
+    std::vector<T*> results;
+    for (const std::unique_ptr<structSearcher>& searchItem : dataBase)
     {
-        enemy* currentEnemy = dynamic_cast<enemy*>(searchQuery.get());
+        T* castedItem = dynamic_cast<T*>(searchItem.get());
 
-        if (currentEnemy != nullptr && currentEnemy->region == "stad")
+        if (castedItem != nullptr && selectionRequirements(castedItem))
         {
-            list.push_back(currentEnemy);
+            results.push_back(castedItem);
         }
     }
+
+    return results;
+}
+
+void setupAndUtility::createEnemySample(std::string searchQuery)
+{
+    std::vector<enemy*> availableEnemies = filterGameData<enemy>(gamedataBase, [searchQuery](const enemy* e)
+        {
+            return e->region == searchQuery;
+        });
 }

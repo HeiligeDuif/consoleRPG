@@ -21,6 +21,7 @@
 #include <unordered_map>
 #include <functional>
 #include <memory>
+#include <variant>
 
 #ifdef _WIN32
 #define NOMINMAX
@@ -52,8 +53,6 @@ struct structSearcher
 {
     virtual ~structSearcher() = default;
     virtual bool matches(const std::string& searchItem) const = 0;  
-
-    virtual std::string getSubMember() const { return ""; }
 };
 
 struct character:structSearcher
@@ -144,8 +143,10 @@ static std::vector<std::string> yesOrNo =
 };
 
 extern std::map<std::string, int*> valueAndStatConnector;
-extern std::map<std::string, int*> factionAssigner;
-extern std::map<std::string, int*> regionAssigner;
+//extern std::map<std::string, int*> factionAssigner;
+//extern std::map<std::string, int*> regionAssigner;
+
+extern std::string currentRegion;
 
 class setupAndUtility
 { 
@@ -156,7 +157,7 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
-    void sampleMaker();
+    void createEnemySample(std::string searchQuery);
 private:
     void setConsoleOutputUTF8();  
 };
