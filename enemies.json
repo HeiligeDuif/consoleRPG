@@ -4,8 +4,8 @@
     "hpMax": 4,
     "attack": 2,
     "goldReward": 1,
-    "difficultyIndicator":  0,
-    "faction": "City",
+    "difficultyIndicator": 0,
+    "faction": "village",
     "region": "street"
 
   },
@@ -15,8 +15,17 @@
     "attack": 1,
     "goldReward": 1,
     "difficultyIndicator": 0,
-    "faction": "City",
+    "faction": "village",
     "region": "street"
+  },
+  {
+    "name": "Boar",
+    "hpMax": 8,
+    "attack": 2,
+    "goldReward": 2,
+    "difficultyIndicator": 0,
+    "faction": "animal",
+    "region": "forest"
   },
   {
     "name": "Bamibal",
@@ -24,7 +33,7 @@
     "attack": 1232,
     "goldReward": 156235452,
     "difficultyIndicator": 9,
-    "faction": "City",
+    "faction": "village",
     "region": "street"
   }
 ]

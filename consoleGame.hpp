@@ -147,6 +147,7 @@ extern std::map<std::string, int*> valueAndStatConnector;
 //extern std::map<std::string, int*> regionAssigner;
 
 extern std::string currentRegion;
+extern std::vector<enemy*> availableEnemies;
 
 class setupAndUtility
 { 
@@ -157,7 +158,25 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
-    void createEnemySample(std::string searchQuery);
+    std::vector<enemy*> createEnemySample();
+
+    template <typename T, typename Predicate>
+    std::vector<T*> filterGameData(const std::vector<std::unique_ptr<structSearcher>>& gamedataBase, Predicate selectionRequirements)
+    {
+        std::vector<T*> results;
+        for (const std::unique_ptr<structSearcher>& searchItem : gamedataBase)
+        {
+            T* castedItem = dynamic_cast<T*>(searchItem.get());
+
+            if (castedItem != nullptr && selectionRequirements(castedItem))
+            {
+                results.push_back(castedItem);
+            }
+        }
+
+        return results;
+    }
+
 private:
     void setConsoleOutputUTF8();  
 };
@@ -175,6 +194,7 @@ private:
 class gameDataCreation
 {
 public:
+    void gameDataGenerator();
     void loadEnemies();
     void loadCharacters();
     void loadLocations();

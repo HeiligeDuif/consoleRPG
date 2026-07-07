@@ -39,6 +39,7 @@ void mainGameLoop::splitOptions(int chosenRoad)
     if (locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
     {
         locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction](); //execute function tied to string in JSON file
+        currentRegion = locations[chosenRoad].name;
     }
     else
     {

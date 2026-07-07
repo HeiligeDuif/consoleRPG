@@ -2,6 +2,8 @@
 enemy currentCombatEnemy;
 char playerAction;
 
+std::vector<enemy*> availableEnemies;
+
     void combat::basicCombat()
     {
         std::cout << "You see an enemy. Naturally you want to kill it. \n";
@@ -26,18 +28,18 @@ char playerAction;
     void combat::selectEnemy()
     {
         setupAndUtility util;
-        int randomEnemy = util.seedIteration(enemies.size());
-        currentCombatEnemy = enemies[randomEnemy];
-        if (regionAssigner.contains(enemies[randomEnemy].region))
-        {
+        availableEnemies = util.createEnemySample();
 
+        if (availableEnemies.empty()) {
+            std::cout << "Error: No enemies found in region: " << currentRegion << "!\n";
+            return; // Stop de functie om een crash te voorkomen
         }
-        else
-        {
-            std::cout << RED << "ERROR: This is not supposed to happen, blame the dev" << RESET << "\n";
-        }
+
+        int randomEnemy = util.seedIteration(availableEnemies.size());
+        currentCombatEnemy = *availableEnemies[randomEnemy];
+
         currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
-        std::cout << "your current enemy is: " << enemies[randomEnemy].name << "." << "\n";
+        std::cout << "your current enemy is: " << availableEnemies[randomEnemy]->name << "." << "\n";
     }
 
     void combat::combatTurn()
@@ -137,4 +139,13 @@ char playerAction;
 
             break;
         }
+    }
+
+    std::vector<enemy*> setupAndUtility::createEnemySample()
+    {
+        std::vector<enemy*> filteredEnemies = filterGameData<enemy>(gamedataBase, [](const enemy* e)
+            {
+                return e->region == currentRegion;
+            });
+        return filteredEnemies;
     }

@@ -3,6 +3,7 @@ void setupAndUtility::startGame()
 {
     gameDataCreation gameData;
     setConsoleOutputUTF8();
+    gameData.gameDataGenerator();
     gameData.loadEnemies();
     gameData.loadCharacters();
     gameData.loadLocations();
@@ -106,29 +107,4 @@ int setupAndUtility::seedIteration(int divisionAmount)
     int randomizedOutput;
     randomizedOutput = seedDivision * divisionAmount;
     return randomizedOutput;
-}
-
-template <typename T, typename Predicate>
-std::vector<T*> filterGameData(const std::vector<std::unique_ptr<structSearcher>>& database, Predicate selectionRequirements)
-{
-    std::vector<T*> results;
-    for (const std::unique_ptr<structSearcher>& searchItem : dataBase)
-    {
-        T* castedItem = dynamic_cast<T*>(searchItem.get());
-
-        if (castedItem != nullptr && selectionRequirements(castedItem))
-        {
-            results.push_back(castedItem);
-        }
-    }
-
-    return results;
-}
-
-void setupAndUtility::createEnemySample(std::string searchQuery)
-{
-    std::vector<enemy*> availableEnemies = filterGameData<enemy>(gamedataBase, [searchQuery](const enemy* e)
-        {
-            return e->region == searchQuery;
-        });
 }

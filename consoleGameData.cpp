@@ -24,6 +24,14 @@ std::map<std::string, int*> regionAssigner;
 std::string region;
 std::string faction;
 
+std::string currentRegion;
+std::vector<std::unique_ptr<structSearcher>> gamedataBase;
+
+void gameDataCreation::gameDataGenerator()
+{
+    for (int i = 0; i < ; i++)
+}
+
 void gameDataCreation::loadEnemies()
 {
     std::ifstream file("enemies.json");
