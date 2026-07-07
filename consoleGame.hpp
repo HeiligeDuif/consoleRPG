@@ -18,7 +18,6 @@
 #include <iomanip>
 #include <chrono>
 #include <thread>
-#include <limits>
 #include <unordered_map>
 #include <functional>
 #include <memory>
@@ -33,7 +32,8 @@ inline const char* RED = "\033[31m";
 inline const char* BLUE = "\033[34m";
 inline const char* RESET = "\033[0m";
 
-std::vector<std::unique_ptr<structSearcher>> gamedataBase;
+struct structSearcher;
+extern std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
 inline void EMPTYSCREEN()
 {
@@ -52,6 +52,8 @@ struct structSearcher
 {
     virtual ~structSearcher() = default;
     virtual bool matches(const std::string& searchItem) const = 0;  
+
+    virtual std::string getSubMember() const { return ""; }
 };
 
 struct character:structSearcher
@@ -154,7 +156,7 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
-    void sampleMaker(std::vector<structSearcher> list);
+    void sampleMaker();
 private:
     void setConsoleOutputUTF8();  
 };

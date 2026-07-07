@@ -108,7 +108,16 @@ int setupAndUtility::seedIteration(int divisionAmount)
     return randomizedOutput;
 }
 
-void setupAndUtility::sampleMaker(std::vector<structSearcher> list)
+void setupAndUtility::sampleMaker()
 {
-    
+    std::vector<structSearcher> list;
+    for (const std::unique_ptr<structSearcher>& searchQuery : gamedataBase)
+    {
+        enemy* currentEnemy = dynamic_cast<enemy*>(searchQuery.get());
+
+        if (currentEnemy != nullptr && currentEnemy->region == "stad")
+        {
+            list.push_back(currentEnemy);
+        }
+    }
 }
