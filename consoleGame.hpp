@@ -158,7 +158,6 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
-    std::vector<enemy*> createEnemySample();
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)
@@ -167,6 +166,23 @@ public:
         {
             gamedataBase.push_back(std::make_unique<T>(stuff));
         }
+    }
+
+    template <typename T>
+    std::vector<T*> filterGameData(const std::vector<std::unique_ptr<structSearcher>>& source,
+        std::function<bool(const T*)> predicate)
+    {
+        std::vector<T*> results;
+        for (const auto& item : source) {
+            // 1. Probeer het type te casten naar T
+            if (T* derived = dynamic_cast<T*>(item.get())) {
+                // 2. Als het type matcht, check dan de lambda-voorwaarde
+                if (predicate(derived)) {
+                    results.push_back(derived);
+                }
+            }
+        }
+        return results;
     }
 
 private:
@@ -201,6 +217,7 @@ class combat
 {
 public:
     void basicCombat();
+    std::vector<enemy*> createEnemySample();
 private:
     void selectEnemy();
     void combatTurn();

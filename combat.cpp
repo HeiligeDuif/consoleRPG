@@ -28,7 +28,7 @@ std::vector<enemy*> availableEnemies;
     void combat::selectEnemy()
     {
         setupAndUtility util;
-        //availableEnemies = util.createEnemySample();
+        availableEnemies = createEnemySample();
 
         if (availableEnemies.empty()) {
             std::cout << "Error: No enemies found in region: " << currentRegion << "!\n";
@@ -141,12 +141,12 @@ std::vector<enemy*> availableEnemies;
         }
     }
 
-    /*std::vector<enemy*> setupAndUtility::createEnemySample()
+    std::vector<enemy*> combat::createEnemySample()
     {
-        std::vector<enemy*> filteredEnemies = filterGameData<enemy>(gamedataBase, [](const enemy* e)
+        setupAndUtility util;
+        std::vector<enemy*> filteredEnemies = util.filterGameData<enemy>(gamedataBase, [](const enemy* e)
             {
                 return e->region == currentRegion;
             });
-        int placeholder = 1;
-        return placeholder;
-    }*/
+        return filteredEnemies;
+    }
