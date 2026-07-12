@@ -29,7 +29,15 @@ std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
 void gameDataCreation::gameDataGenerator()
 {
-    for (int i = 0; i < ; i++)
+    setupAndUtility util;
+    gamedataBase.reserve(gamedataBase.size() + characters.size()+enemies.size()+locations.size()+items.size());
+
+    util.addToDataBase<character>(characters);
+    util.addToDataBase<enemy>(enemies);
+    util.addToDataBase<location>(locations);
+    util.addToDataBase<item>(items);
+
+    std::cout << "succesfully loaded " << gamedataBase.size() << " items to database." << "\n";
 }
 
 void gameDataCreation::loadEnemies()

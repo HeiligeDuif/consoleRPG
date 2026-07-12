@@ -55,7 +55,7 @@ struct structSearcher
     virtual bool matches(const std::string& searchItem) const = 0;  
 };
 
-struct character:structSearcher
+struct character:public structSearcher
 {
     std::string name;
     int hpMax;
@@ -66,7 +66,7 @@ struct character:structSearcher
     }
 };
 
-struct enemy :structSearcher
+struct enemy :public structSearcher
 {
     std::string name;
     int hpMax;
@@ -87,7 +87,7 @@ struct action
     std::string resultOfAction;
 };
 
-struct location:structSearcher
+struct location:public structSearcher
 {
     std::string name;
     std::string description;
@@ -98,7 +98,7 @@ struct location:structSearcher
     }
 };
 
-struct item :structSearcher
+struct item :public structSearcher
 {
     std::string name;
     std::string bonus;
@@ -160,21 +160,13 @@ public:
     int seedIteration(int divisionAmount);
     std::vector<enemy*> createEnemySample();
 
-    template <typename T, typename Predicate>
-    std::vector<T*> filterGameData(const std::vector<std::unique_ptr<structSearcher>>& gamedataBase, Predicate selectionRequirements)
+    template <typename T, typename storage>
+    void addToDataBase(storage& source)
     {
-        std::vector<T*> results;
-        for (const std::unique_ptr<structSearcher>& searchItem : gamedataBase)
+        for (const auto& stuff : source)
         {
-            T* castedItem = dynamic_cast<T*>(searchItem.get());
-
-            if (castedItem != nullptr && selectionRequirements(castedItem))
-            {
-                results.push_back(castedItem);
-            }
+            gamedataBase.push_back(std::make_unique<T>(stuff));
         }
-
-        return results;
     }
 
 private:

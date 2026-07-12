@@ -3,7 +3,7 @@ void setupAndUtility::startGame()
 {
     gameDataCreation gameData;
     setConsoleOutputUTF8();
-    gameData.gameDataGenerator();
+;
     gameData.loadEnemies();
     gameData.loadCharacters();
     gameData.loadLocations();
@@ -11,6 +11,8 @@ void setupAndUtility::startGame()
     
     gameData.loadItems();
     gameData.unorderedMapMaker();
+
+    gameData.gameDataGenerator();
 
     gameData.setseed();
 
