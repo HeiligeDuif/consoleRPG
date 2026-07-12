@@ -143,6 +143,7 @@ std::vector<enemy*> availableEnemies;
 
     std::vector<enemy*> combat::createEnemySample()
     {
+        std::cout << gamedataBase.size() << currentRegion;
         setupAndUtility util;
         std::vector<enemy*> filteredEnemies = util.filterGameData<enemy>(gamedataBase, [](const enemy* e)
             {
