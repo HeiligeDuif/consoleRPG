@@ -9,9 +9,12 @@
       },
       {
         "nameOfAction": "Leave the village",
-        "resultOfAction": "basicCombat"
+        "resultOfAction": "leave"
       }
-    ]
+    ],
+    "rarity": 0,
+    "proximity": 0,
+    "beenHere":  false
   },
   {
     "name": "forest",
@@ -19,7 +22,7 @@
     "possibleActions": [
       {
         "nameOfAction": "Search for enemies to kill",
-        "resultOfAction":  "basicCombat"
+        "resultOfAction": "basicCombat"
       },
       {
         "nameOfAction": "Look for ingredients",
@@ -27,8 +30,11 @@
       },
       {
         "nameOfAction": "Leave the forest",
-        "resultOfAction": "basicCombat"
+        "resultOfAction": "leave"
       }
-    ]
+    ],
+    "rarity": 0,
+    "proximity": 0,
+    "beenHere": false
   }
 ]

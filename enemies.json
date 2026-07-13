@@ -6,7 +6,7 @@
     "goldReward": 1,
     "difficultyIndicator": 0,
     "faction": "village",
-    "region": "street"
+    "region": "village"
 
   },
   {
@@ -16,7 +16,7 @@
     "goldReward": 1,
     "difficultyIndicator": 0,
     "faction": "village",
-    "region": "street"
+    "region": "village"
   },
   {
     "name": "Boar",
@@ -34,6 +34,6 @@
     "goldReward": 156235452,
     "difficultyIndicator": 9,
     "faction": "village",
-    "region": "street"
+    "region": "caldruki"
   }
 ]

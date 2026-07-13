@@ -1,4 +1,5 @@
 #include "consoleGame.hpp"
+bool leaving = false;
 
 void activities::shopEntry()
 {
@@ -58,4 +59,9 @@ void activities::canPlayerBuy(int shopChoice)
     {
         std::cout << "You don't have enough money, earn some by defeating some monsters." << "\n";
     }
+}
+
+void activities::leaveFunction()
+{
+    leaving = true;
 }

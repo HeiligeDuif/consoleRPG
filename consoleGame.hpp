@@ -92,11 +92,15 @@ struct location:public structSearcher
     std::string name;
     std::string description;
     std::vector<action> possibleActions;
+    int rarity;
+    int proximity;
+    bool beenHere;
 
     bool matches(const std::string& searchItem) const override {
         return name == searchItem;
     }
 };
+extern int proximityCounter;
 
 struct item :public structSearcher
 {
@@ -113,7 +117,7 @@ struct item :public structSearcher
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, difficultyIndicator, faction, region)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 
 extern uint32_t seedValue;
@@ -148,6 +152,8 @@ extern std::map<std::string, int*> valueAndStatConnector;
 
 extern std::string currentRegion;
 extern std::vector<enemy*> availableEnemies;
+
+extern bool leaving;
 
 class setupAndUtility
 { 
@@ -195,8 +201,9 @@ public:
     void mainLoop();
     int multipleWaySplit(int);
     void splitOptions(int);
+    std::vector<location*> createLocationSample();
 private:
-
+    void locationSampler();
 };
 
 class gameDataCreation
@@ -231,6 +238,7 @@ class activities
 public:
     void shopEntry();
     void canPlayerBuy(int shopChoice);
+    void leaveFunction();
 };
 
 #endif
