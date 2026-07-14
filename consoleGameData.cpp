@@ -234,7 +234,7 @@ void gameDataCreation::unorderedMapMaker()
 
     abilityAttributeAssigner =
     {
-        {"damage",  []() {combat currentFight; currentFight.abilityDamage(); }},
+        {"damage",  []() {combat currentFight; currentFight.abilityDamage(currentAbilityAmount); }},
         {"burn", []() {combat currentFight; currentFight.abilityDoT(); }}
     };
     /*

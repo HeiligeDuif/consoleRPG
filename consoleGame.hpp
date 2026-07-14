@@ -146,6 +146,8 @@ extern std::vector<ability> abilities;
 extern std::vector<ability> knownAbilities;
 extern std::vector<ability> equippedAbilities;
 
+extern int currentAbilityDamage;
+
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
 
@@ -247,6 +249,8 @@ class combat
 public:
     void basicCombat();
     std::vector<enemy*> createEnemySample();
+    void abilityDamage(int damageOfAbility);
+    void abilityDoT();
 private:
     void selectEnemy();
     void combatTurn();

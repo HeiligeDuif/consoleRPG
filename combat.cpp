@@ -110,6 +110,20 @@ std::vector<enemy*> availableEnemies;
         case 'C':
             playerAction = 'C';
             std::cout << "What ability do you want to use?" << "\n";
+            for (int i = 0; i < equippedAbilities.size(); i++)
+            {
+                std::cout << charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
+            }
+            int chosenAbility = util.correctInput() - 'A';
+            int currentAbilityAmount = equippedAbilities[chosenAbility].amount;
+            if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].effect))
+            {
+                abilityAttributeAssigner[equippedAbilities[chosenAbility].effect];
+            }
+            else
+            {
+                std::cout << "You fucked up something, didn't you?" << "\n";
+            }
             break;
         }
 
@@ -150,4 +164,14 @@ std::vector<enemy*> availableEnemies;
                 return e->region == currentRegion;
             });
         return filteredEnemies;
+    }
+
+    void combat::abilityDamage(int damageOfAbility)
+    {
+
+    }
+
+    void combat::abilityDoT()
+    {
+
     }
