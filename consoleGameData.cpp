@@ -12,12 +12,14 @@ std::vector<char> charPossibilities;
 std::vector<character> characters;
 std::vector<enemy> enemies;
 std::vector<location> locations;
+std::vector<ability> abilities;
 std::vector<action> actions;
 std::vector<item> items;
 character player;
 
 std::map<std::string, std::function<void()>> locationActions;
 std::map<std::string, int*> valueAndStatConnector;
+std::map < std::string, std::function<void()>> abilityAttributeAssigner;
 std::map<std::string, int*> factionAssigner;
 std::map<std::string, int*> regionAssigner;
 
@@ -98,12 +100,37 @@ void gameDataCreation::loadLocations()
     file >> j;
 
     locations = j.get<std::vector<location>>();
-    size_t amountOfItems = locations.size();
+    size_t amountOfLocations = locations.size();
 
-    util.vectorCreation(amountOfItems);
+    util.vectorCreation(amountOfLocations);
 
     for (const auto& c : locations) {
         std::cout << "Succesfully loaded locations: " << c.name << "\n";
+        wait(20);
+    }
+    EMPTYSCREEN();
+}
+
+void gameDataCreation::loadAbilities()
+{
+    setupAndUtility util;
+
+    std::ifstream file("abilities.json");
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Can't find JSON file!");;
+    }
+
+    json j;
+    file >> j;
+
+    abilities = j.get<std::vector<ability>>();
+    size_t amountOfAbilities = abilities.size();
+
+    util.vectorCreation(amountOfAbilities);
+
+    for (const auto& c : abilities) {
+        std::cout << "Succesfully loaded abilities: " << c.name << "\n";
         wait(20);
     }
     EMPTYSCREEN();
@@ -203,6 +230,12 @@ void gameDataCreation::unorderedMapMaker()
     {
         {"hp", &player.hpMax},
         {"attack", &player.attack}
+    };
+
+    abilityAttributeAssigner =
+    {
+        {"damage",  []() {combat currentFight; currentFight.abilityDamage(); }},
+        {"burn", []() {combat currentFight; currentFight.abilityDoT(); }}
     };
     /*
     factionAssigner =

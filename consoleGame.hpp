@@ -102,6 +102,19 @@ struct location:public structSearcher
 };
 extern int proximityCounter;
 
+struct ability :public structSearcher
+{
+    std::string name;
+    std::string effect;
+    int amount;
+    std::string special;
+    int specialAmount;
+
+    bool matches(const std::string& searchItem) const override {
+        return name == searchItem;
+    }
+};
+
 struct item :public structSearcher
 {
     std::string name;
@@ -118,6 +131,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, diffi
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, special)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 
 extern uint32_t seedValue;
@@ -127,6 +141,11 @@ extern std::vector<char> charPossibilities;
 extern std::vector<enemy> enemies;
 extern std::vector<character> characters;
 extern std::vector<location> locations;
+
+extern std::vector<ability> abilities;
+extern std::vector<ability> knownAbilities;
+extern std::vector<ability> equippedAbilities;
+
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
 
@@ -147,6 +166,7 @@ static std::vector<std::string> yesOrNo =
 };
 
 extern std::map<std::string, int*> valueAndStatConnector;
+extern std::map < std::string, std::function<void()>> abilityAttributeAssigner;
 //extern std::map<std::string, int*> factionAssigner;
 //extern std::map<std::string, int*> regionAssigner;
 
@@ -164,6 +184,7 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
+    void unlockAbility(ability);
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)
@@ -180,9 +201,9 @@ public:
     {
         std::vector<T*> results;
         for (const auto& item : source) {
-            // 1. Probeer het type te casten naar T
+            // typecast to T
             if (T* derived = dynamic_cast<T*>(item.get())) {
-                // 2. Als het type matcht, check dan de lambda-voorwaarde
+                // matching type
                 if (predicate(derived)) {
                     results.push_back(derived);
                 }
@@ -213,6 +234,7 @@ public:
     void loadEnemies();
     void loadCharacters();
     void loadLocations();
+    void loadAbilities();
     void loadItems();
     void setseed();
     void setClass();

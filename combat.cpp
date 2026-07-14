@@ -109,6 +109,7 @@ std::vector<enemy*> availableEnemies;
 
         case 'C':
             playerAction = 'C';
+            std::cout << "What ability do you want to use?" << "\n";
             break;
         }
 

@@ -18,5 +18,10 @@
     "name": "Duif",
     "hpMax": 1.3333,
     "attack": 6.66
+  },
+  {
+    "name": "Wizard",
+    "hpMax": 5,
+    "attack": 2
   }
 ]

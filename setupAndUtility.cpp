@@ -7,6 +7,7 @@ void setupAndUtility::startGame()
     gameData.loadEnemies();
     gameData.loadCharacters();
     gameData.loadLocations();
+    gameData.loadAbilities();
     gameData.locationAction();
     
     gameData.loadItems();
@@ -109,4 +110,9 @@ int setupAndUtility::seedIteration(int divisionAmount)
     int randomizedOutput;
     randomizedOutput = seedDivision * divisionAmount;
     return randomizedOutput;
+}
+
+void unlockAbility(ability)
+{
+
 }

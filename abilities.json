@@ -1,0 +1,9 @@
+[
+  {
+    "name": "fireball",
+    "effect": "damage",
+    "amount": 3,
+    "special": "burn",
+    "specialAmount": 3
+  }
+]
