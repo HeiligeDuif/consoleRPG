@@ -112,7 +112,7 @@ int setupAndUtility::seedIteration(int divisionAmount)
     return randomizedOutput;
 }
 
-void unlockAbility(ability)
+void setupAndUtility::unlockAbility(ability newAbility)
 {
-
+    equippedAbilities.push_back(newAbility);
 }

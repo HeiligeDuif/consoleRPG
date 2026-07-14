@@ -146,7 +146,8 @@ extern std::vector<ability> abilities;
 extern std::vector<ability> knownAbilities;
 extern std::vector<ability> equippedAbilities;
 
-extern int currentAbilityDamage;
+extern int currentAbilityAmount;
+extern ability newAbility;
 
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
@@ -186,7 +187,7 @@ public:
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
-    void unlockAbility(ability);
+    void unlockAbility(ability ewAbility);
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)

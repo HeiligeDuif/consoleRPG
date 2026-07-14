@@ -1,6 +1,8 @@
 #include "consoleGame.hpp"
 enemy currentCombatEnemy;
 char playerAction;
+int currentAbilityAmount;
+int chosenAbility;
 
 std::vector<enemy*> availableEnemies;
 
@@ -82,8 +84,12 @@ std::vector<enemy*> availableEnemies;
         {
             "Attack",
             "Defend",
-            "Ability"
         };
+
+        if (equippedAbilities.size() > 0)
+        {
+            playerCombatOptions.push_back("Ability");
+        }
 
         util.vectorCreation(playerCombatOptions.size());
 
@@ -110,15 +116,18 @@ std::vector<enemy*> availableEnemies;
         case 'C':
             playerAction = 'C';
             std::cout << "What ability do you want to use?" << "\n";
+
+            util.vectorCreation(equippedAbilities.size());
+
             for (int i = 0; i < equippedAbilities.size(); i++)
             {
                 std::cout << charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
             }
-            int chosenAbility = util.correctInput() - 'A';
+            chosenAbility = util.correctInput() - 'A';
             int currentAbilityAmount = equippedAbilities[chosenAbility].amount;
             if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].effect))
             {
-                abilityAttributeAssigner[equippedAbilities[chosenAbility].effect];
+                abilityAttributeAssigner[equippedAbilities[chosenAbility].effect]();
             }
             else
             {
@@ -168,7 +177,9 @@ std::vector<enemy*> availableEnemies;
 
     void combat::abilityDamage(int damageOfAbility)
     {
-
+        std::cout << "You casted: " << equippedAbilities[chosenAbility].name << "!" << "\n";
+        std::cout << "the enemy took " << RED << equippedAbilities[chosenAbility].amount << RESET << " damage!" << "\n";
+        currentCombatEnemyCurrentHP -= equippedAbilities[chosenAbility].amount;
     }
 
     void combat::abilityDoT()

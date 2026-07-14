@@ -12,7 +12,11 @@ std::vector<char> charPossibilities;
 std::vector<character> characters;
 std::vector<enemy> enemies;
 std::vector<location> locations;
+
 std::vector<ability> abilities;
+std::vector<ability> knownAbilities;
+std::vector<ability> equippedAbilities;
+
 std::vector<action> actions;
 std::vector<item> items;
 character player;
@@ -204,11 +208,15 @@ void gameDataCreation::setClass()
     char playerChoice = util.correctInput();
 
     int characterChoiceInt = static_cast<int>(playerChoice) - 'A';
-    //std::cout << characterChoiceInt;
 
     std::cout << "You chose: " << characters[characterChoiceInt].name << "\n";
 
     player = characters[characterChoiceInt];
+
+    if (player.name == "Wizard")
+    {
+        util.unlockAbility(abilities[0]);
+    }
 
     playerCurrentHP = player.hpMax;
 }

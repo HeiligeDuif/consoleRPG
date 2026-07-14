@@ -46,7 +46,7 @@ void mainGameLoop::splitOptions(int chosenRoad)
         }
         char chosenOption = util.correctInput();
         std::cout << "You chose option: " << chosenOption << "\n";
-        //should be split up
+        
         if (locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
         {
             locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction](); //execute function tied to string in JSON file
