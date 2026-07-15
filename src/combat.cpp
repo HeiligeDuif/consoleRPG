@@ -19,7 +19,8 @@ std::vector<enemy*> availableEnemies;
                 {
                     std::cout << "You have succesfully defeated the enemy!\n";
                 }
-                else {
+                else 
+                {
                     std::cout << "You have been defeated by: " << currentCombatEnemy.name << "!\n";
                 }
                 break;
@@ -34,7 +35,7 @@ std::vector<enemy*> availableEnemies;
 
         if (availableEnemies.empty()) {
             std::cout << "Error: No enemies found in region: " << currentRegion << "!\n";
-            return; // Stop de functie om een crash te voorkomen
+            return;
         }
 
         int randomEnemy = util.seedIteration(availableEnemies.size());

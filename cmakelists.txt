@@ -1,0 +1,47 @@
+cmake_minimum_required(VERSION 3.10)
+project(consoleGame)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  nlohmann_json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+
+FetchContent_MakeAvailable(nlohmann_json)
+
+# C++ standaard instellen
+if(MSVC)
+    add_compile_options(/std:c++latest)
+else()
+    set(CMAKE_CXX_STANDARD 26)
+endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Verzamel alle .cpp bestanden in de src map
+add_executable(consoleGame
+src/activities.cpp
+src/combat.cpp
+src/consoleGame.cpp
+src/consoleGameData.cpp
+src/mainLoop.cpp
+src/setupAndUtility.cpp
+)
+
+# Include mappen toevoegen
+target_include_directories(consoleGame PUBLIC include)
+target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json)
+
+set(JSON_FILES abilities.json characters.json enemies.json items.json locations.json)
+
+foreach(json_file ${JSON_FILES})
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${json_file}" 
+                   "${CMAKE_CURRENT_BINARY_DIR}/${json_file}" COPYONLY)
+endforeach()
+
+add_custom_command(TARGET consoleGame POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/graphics"
+    "$<TARGET_FILE_DIR:consoleGame>/graphics"
+)

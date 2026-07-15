@@ -35,5 +35,14 @@
     "difficultyIndicator": 9,
     "faction": "village",
     "region": "caldruki"
+  },
+  {
+    "name": "squirrel",
+    "hpMax": 3,
+    "attack": 1,
+    "goldReward": 0,
+    "difficultyIndicator": 9,
+    "faction": "idc",
+    "region": "forest"
   }
 ]

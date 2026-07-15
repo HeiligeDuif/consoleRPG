@@ -51,7 +51,7 @@ void gameDataCreation::loadEnemies()
     std::ifstream file("enemies.json");
 
     if (!file.is_open()) {
-        throw std::runtime_error("Can't find JSON file!");;
+        throw std::runtime_error("Can't find JSON file!");
     }
     json j;
     file >> j;
@@ -222,8 +222,7 @@ void gameDataCreation::setClass()
 }
 
 void gameDataCreation::locationAction()
-{
-    
+{  
     locationActions = 
     {
         {"basicCombat", []() {combat currentFight; currentFight.basicCombat(); }},

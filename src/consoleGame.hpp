@@ -3,10 +3,9 @@
 #define consoleGame_HPP
 
 #include <iostream>
-#include <json/single_include/nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
 #include <fstream>
-#include <array>
-#include <vector>
+#include <array>#include <vector>
 #include <cctype>
 #include <string>
 #include <limits>
@@ -22,6 +21,7 @@
 #include <functional>
 #include <memory>
 #include <variant>
+#include <map>
 
 #ifdef _WIN32
 #define NOMINMAX
@@ -169,7 +169,7 @@ static std::vector<std::string> yesOrNo =
 };
 
 extern std::map<std::string, int*> valueAndStatConnector;
-extern std::map < std::string, std::function<void()>> abilityAttributeAssigner;
+extern std::map<std::string, std::function<void()>> abilityAttributeAssigner;
 //extern std::map<std::string, int*> factionAssigner;
 //extern std::map<std::string, int*> regionAssigner;
 
