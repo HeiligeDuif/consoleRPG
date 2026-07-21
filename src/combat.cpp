@@ -2,7 +2,11 @@
 enemy currentCombatEnemy;
 char playerAction;
 int currentAbilityAmount;
+int currentAbilitySpecialAmount;
 int chosenAbility;
+enemy currentActor;
+std::vector<structSearcher> currentTurnCharacter;
+int burnTimer = 0;
 
 std::vector<enemy*> availableEnemies;
 
@@ -10,8 +14,11 @@ std::vector<enemy*> availableEnemies;
     {
         std::cout << "You see an enemy. Naturally you want to kill it. \n";
         selectEnemy();
+        int turnCounter = 0;
         while (true)
         {
+            turnCounter++;
+            std::cout << "turn: " << turnCounter << "\n";
             combatTurn();
             if (playerCurrentHP <= 0 || currentCombatEnemyCurrentHP <= 0)
             {
@@ -22,6 +29,8 @@ std::vector<enemy*> availableEnemies;
                 else 
                 {
                     std::cout << "You have been defeated by: " << currentCombatEnemy.name << "!\n";
+                    std::cout << "You lose!" << "\n";
+                    exit(0);
                 }
                 break;
             }
@@ -76,6 +85,7 @@ std::vector<enemy*> availableEnemies;
         }
 
         std::cout << "you have " << playerCurrentHP << " HP left.\n";
+        endTurnEffects();
     }
 
     void combat::playerCombatTurn(bool& playerBlocking)
@@ -125,10 +135,22 @@ std::vector<enemy*> availableEnemies;
                 std::cout << charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
             }
             chosenAbility = util.correctInput() - 'A';
-            int currentAbilityAmount = equippedAbilities[chosenAbility].amount;
+
+            currentAbilityAmount = equippedAbilities[chosenAbility].amount;
             if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].effect))
             {
                 abilityAttributeAssigner[equippedAbilities[chosenAbility].effect]();
+            }
+            else
+            {
+                std::cout << "You fucked up something, didn't you?" << "\n";
+            }
+
+            currentAbilitySpecialAmount = equippedAbilities[chosenAbility].specialAmount;
+            std::cout << equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
+            if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].special))
+            {
+                abilityAttributeAssigner[equippedAbilities[chosenAbility].special]();
             }
             else
             {
@@ -183,7 +205,19 @@ std::vector<enemy*> availableEnemies;
         currentCombatEnemyCurrentHP -= equippedAbilities[chosenAbility].amount;
     }
 
-    void combat::abilityDoT()
+    void combat::abilityDoT(int duration)
     {
+        burnTimer = duration;
+        //std::cout << "DEBUG: burnTimer 1:" << burnTimer << "\n";
+    }
 
+    void combat::endTurnEffects()
+    {
+        if (burnTimer > 0)
+        {
+            currentCombatEnemyCurrentHP--;
+            burnTimer--;
+            std::cout << "The enemy " << equippedAbilities[chosenAbility].special <<"s! he takes: " << RED << "1" << RESET << " damage!" << "\n";
+            std::cout << "The enemy has: " << currentCombatEnemyCurrentHP << " HP left!" << "\n";
+        }
     }

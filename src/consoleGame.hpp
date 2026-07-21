@@ -131,7 +131,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, diffi
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, special)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, specialAmount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 
 extern uint32_t seedValue;
@@ -147,6 +147,7 @@ extern std::vector<ability> knownAbilities;
 extern std::vector<ability> equippedAbilities;
 
 extern int currentAbilityAmount;
+extern int currentAbilitySpecialAmount;
 extern ability newAbility;
 
 extern std::map<std::string, std::function<void()>> locationActions;
@@ -251,13 +252,14 @@ public:
     void basicCombat();
     std::vector<enemy*> createEnemySample();
     void abilityDamage(int damageOfAbility);
-    void abilityDoT();
+    void abilityDoT(int duration);
 private:
     void selectEnemy();
     void combatTurn();
     void playerCombatTurn(bool& playerBlocking);
     void enemyIntent();
     void enemyCombatTurn();
+    void endTurnEffects();
 };
 
 class activities

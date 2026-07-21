@@ -242,7 +242,7 @@ void gameDataCreation::unorderedMapMaker()
     abilityAttributeAssigner =
     {
         {"damage",  []() {combat currentFight; currentFight.abilityDamage(currentAbilityAmount); }},
-        {"burn", []() {combat currentFight; currentFight.abilityDoT(); }}
+        {"burn", []() {combat currentFight; currentFight.abilityDoT(currentAbilitySpecialAmount); }}
     };
     /*
     factionAssigner =

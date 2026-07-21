@@ -32,6 +32,7 @@ src/setupAndUtility.cpp
 # Include mappen toevoegen
 target_include_directories(consoleGame PUBLIC include)
 target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json)
+set_target_properties(consoleGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 set(JSON_FILES abilities.json characters.json enemies.json items.json locations.json)
 
