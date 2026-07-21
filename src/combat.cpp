@@ -39,7 +39,7 @@ std::vector<enemy*> availableEnemies;
 
     void combat::selectEnemy()
     {
-        setupAndUtility util;
+        setupAndUtility util(gm);
         availableEnemies = createEnemySample();
 
         if (availableEnemies.empty()) {
@@ -90,7 +90,7 @@ std::vector<enemy*> availableEnemies;
 
     void combat::playerCombatTurn(bool& playerBlocking)
     {
-        setupAndUtility util;
+        setupAndUtility util(gm);
         std::vector<std::string> playerCombatOptions =
         {
             "Attack",
@@ -107,7 +107,7 @@ std::vector<enemy*> availableEnemies;
         std::cout << "It is your turn, choose your action:\n";
         for (int i = 0; i < playerCombatOptions.size(); i++)
         {
-            std::cout << charPossibilities[i] << ". " << playerCombatOptions[i] << "\n";
+            std::cout << gm.charPossibilities[i] << ". " << playerCombatOptions[i] << "\n";
         }
 
         switch (util.correctInput())
@@ -132,7 +132,7 @@ std::vector<enemy*> availableEnemies;
 
             for (int i = 0; i < equippedAbilities.size(); i++)
             {
-                std::cout << charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
+                std::cout << gm.charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
             }
             chosenAbility = util.correctInput() - 'A';
 
@@ -190,7 +190,7 @@ std::vector<enemy*> availableEnemies;
 
     std::vector<enemy*> combat::createEnemySample()
     {
-        setupAndUtility util;
+        setupAndUtility util(gm);
         std::vector<enemy*> filteredEnemies = util.filterGameData<enemy>(gamedataBase, [](const enemy* e)
             {
                 return e->region == currentRegion;

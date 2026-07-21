@@ -3,7 +3,7 @@ bool leaving = false;
 
 void activities::shopEntry()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
     std::cout << "Welcome to the shop!\n";
     std::cout << "We have these items for sale:" << "\n"; //verteld dat de dingen te koop zijn
     util.vectorCreation(items.size());
@@ -21,10 +21,10 @@ void activities::shopEntry()
         util.vectorCreation(items.size() + 1); //reset after yesOrNo changed it
         for (int i = 0; i < items.size(); i++)
         {
-            std::cout << charPossibilities[i] << ". " << items[i].name << " for " << items[i].price << " gold." << "\n";
+            std::cout << gm.charPossibilities[i] << ". " << items[i].name << " for " << items[i].price << " gold." << "\n";
         }
 
-        std::cout << charPossibilities[static_cast<int>(items.size())] << ". " << "Nevermind" << "\n";
+        std::cout << gm.charPossibilities[static_cast<int>(items.size())] << ". " << "Nevermind" << "\n";
 
         int shopChoiceInt;
 

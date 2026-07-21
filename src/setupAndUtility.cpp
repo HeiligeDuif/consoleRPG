@@ -1,32 +1,5 @@
 #include "consoleGame.hpp"
-void setupAndUtility::startGame()
-{
-    gameDataCreation gameData;
-    setConsoleOutputUTF8();
-;
-    gameData.loadEnemies();
-    gameData.loadCharacters();
-    gameData.loadLocations();
-    gameData.loadAbilities();
-    gameData.locationAction();
-    
-    gameData.loadItems();
-    gameData.unorderedMapMaker();
 
-    gameData.gameDataGenerator();
-
-    gameData.setseed();
-
-    gameData.setClass();
-
-    std::cout << "You are a traveller from another world...\n" << "Your only purpose is to survive...\n" << "Good luck.\n";
-
-    mainGameLoop mainLoop;
-    while (playerCurrentHP > 0)
-    {
-        mainLoop.mainLoop();
-    }
-}
 
 void setupAndUtility::setConsoleOutputUTF8()
 {
@@ -54,10 +27,10 @@ void setupAndUtility::printAscii(std::string fileName) {
 
 void setupAndUtility::vectorCreation(size_t amountOfChoices)
 {
-    charPossibilities.resize(amountOfChoices);
+    gm.charPossibilities.resize(amountOfChoices);
     for (int i = 0; i < amountOfChoices; i++)
     {
-        charPossibilities[i] = static_cast<char>('A' + i);;
+        gm.charPossibilities[i] = static_cast<char>('A' + i);;
     }
 }
 
@@ -71,11 +44,11 @@ char  setupAndUtility::correctInput()
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         char inputUpper = std::toupper(input);
 
-        for (int i = 0; i < charPossibilities.size(); i++)
+        for (int i = 0; i < gm.charPossibilities.size(); i++)
         {
-            if (inputUpper != charPossibilities[i])
+            if (inputUpper != gm.charPossibilities[i])
             {
-                if (i == charPossibilities.size() - 1)
+                if (i == gm.charPossibilities.size() - 1)
                 {
                     std::cout << RED << "Please enter an available value.\n" << RESET;
                     succesfulInput = false;
@@ -93,20 +66,20 @@ char  setupAndUtility::correctInput()
 
 void setupAndUtility::yesOrNoFunction()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
     util.vectorCreation(yesOrNo.size());
 
     for (int i = 0; i < yesOrNo.size(); i++)
     {
-        std::cout << charPossibilities[i] << ". " << yesOrNo[i] << "\n";
+        std::cout << gm.charPossibilities[i] << ". " << yesOrNo[i] << "\n";
     }
 }
 
 int setupAndUtility::seedIteration(int divisionAmount)
 {
-    seedValue= (seedValue * 1664525) + 1013904223; //Definitely didn't steal this
+    gm.seedValue= (gm.seedValue * 1664525) + 1013904223; //Definitely didn't steal this
     double seedDivision;
-    seedDivision = seedValue / 4294967296.0; //divide by max uint_32 value
+    seedDivision = gm.seedValue / 4294967296.0; //divide by max uint_32 value
     int randomizedOutput;
     randomizedOutput = seedDivision * divisionAmount;
     return randomizedOutput;

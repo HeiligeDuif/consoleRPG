@@ -8,7 +8,7 @@ void mainGameLoop::mainLoop()
 
 int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     util.vectorCreation(AmountOfRoadChoices);
 
@@ -16,7 +16,7 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 
     for (int i = 0; i < AmountOfRoadChoices; i++)
     {
-        std::cout << charPossibilities[i] << ". " << "Road " << charPossibilities[i] << " to " << locations[i].name << ".\n";
+        std::cout << gm.charPossibilities[i] << ". " << "Road " << gm.charPossibilities[i] << " to " << locations[i].name << ".\n";
     }
 
     char roadChoiceMain = util.correctInput();
@@ -36,13 +36,13 @@ void mainGameLoop::splitOptions(int chosenRoad)
             proximityCounter++;
         }
 
-        setupAndUtility util;
+        setupAndUtility util(gm);
 
         util.vectorCreation(locations[chosenRoad].possibleActions.size());
         std::cout << "What do you want to do?\n";
         for (int i = 0; i < locations[chosenRoad].possibleActions.size(); i++)
         {
-            std::cout << charPossibilities[i] << ". " << locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
+            std::cout << gm.charPossibilities[i] << ". " << locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
         }
         char chosenOption = util.correctInput();
         std::cout << "You chose option: " << chosenOption << "\n";
@@ -62,13 +62,13 @@ void mainGameLoop::splitOptions(int chosenRoad)
 void mainGameLoop::locationSampler()
 {
     int randomAmountOfRoads;
-    setupAndUtility util;
+    setupAndUtility util(gm);
     randomAmountOfRoads = util.seedIteration(4);
 }
 
 std::vector<location*> mainGameLoop::createLocationSample()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
     std::vector<location*> filteredLocations = util.filterGameData<location>(gamedataBase, [](const location* e)
         {
             return e->proximity >= proximityCounter;

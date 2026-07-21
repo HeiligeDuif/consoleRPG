@@ -27,7 +27,8 @@ src/consoleGame.cpp
 src/consoleGameData.cpp
 src/mainLoop.cpp
 src/setupAndUtility.cpp
-)
+src/gameManager.cpp
+ "src/gameManager.cpp")
 
 # Include mappen toevoegen
 target_include_directories(consoleGame PUBLIC include)

@@ -134,9 +134,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions,
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, specialAmount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 
-extern uint32_t seedValue;
-extern int amountOfChoices;
-extern std::vector<char> charPossibilities;
+
 
 extern std::vector<enemy> enemies;
 extern std::vector<character> characters;
@@ -179,16 +177,29 @@ extern std::vector<enemy*> availableEnemies;
 
 extern bool leaving;
 
+class gameManager
+{
+public:
+    void startGame();
+    uint32_t seedValue;
+    int amountOfChoices;
+    std::vector<char> charPossibilities;
+private:
+
+};
+
 class setupAndUtility
 { 
 public:
+    setupAndUtility(gameManager& manager) : gm(manager) {}
+
     void vectorCreation(size_t);
     char correctInput();
-    void startGame();
     void printAscii(std::string);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
     void unlockAbility(ability ewAbility);
+    void setConsoleOutputUTF8();
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)
@@ -217,23 +228,29 @@ public:
     }
 
 private:
-    void setConsoleOutputUTF8();  
+    gameManager& gm;
 };
 
 class mainGameLoop
 {
 public:
+    mainGameLoop(gameManager& manager) : gm(manager) {}
+
     void mainLoop();
     int multipleWaySplit(int);
     void splitOptions(int);
     std::vector<location*> createLocationSample();
 private:
+    gameManager& gm;
+
     void locationSampler();
 };
 
 class gameDataCreation
 {
 public:
+    gameDataCreation(gameManager& manager) : gm(manager) {}
+
     void gameDataGenerator();
     void loadEnemies();
     void loadCharacters();
@@ -244,16 +261,23 @@ public:
     void setClass();
     void locationAction();
     void unorderedMapMaker();
+
+private:
+    gameManager& gm;
 };
 
 class combat 
 {
 public:
+    combat(gameManager& manager) : gm(manager) {}
+
     void basicCombat();
     std::vector<enemy*> createEnemySample();
     void abilityDamage(int damageOfAbility);
     void abilityDoT(int duration);
 private:
+    gameManager& gm;
+
     void selectEnemy();
     void combatTurn();
     void playerCombatTurn(bool& playerBlocking);
@@ -265,9 +289,13 @@ private:
 class activities
 {
 public:
+    activities(gameManager& manager) : gm(manager) {}
+
     void shopEntry();
     void canPlayerBuy(int shopChoice);
     void leaveFunction();
+private:
+    gameManager& gm;
 };
 
 #endif

@@ -2,6 +2,7 @@
 
 int main()
 {
-    setupAndUtility manager;
+    gameManager manager;
+    setupAndUtility util(manager);
     manager.startGame();
 }

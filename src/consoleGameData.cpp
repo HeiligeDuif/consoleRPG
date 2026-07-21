@@ -35,7 +35,7 @@ std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
 void gameDataCreation::gameDataGenerator()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
     gamedataBase.reserve(gamedataBase.size() + characters.size()+enemies.size()+locations.size()+items.size());
 
     util.addToDataBase<character>(characters);
@@ -67,7 +67,7 @@ void gameDataCreation::loadEnemies()
 
 void gameDataCreation::loadCharacters()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     std::ifstream file("characters.json");
 
@@ -92,7 +92,7 @@ void gameDataCreation::loadCharacters()
 
 void gameDataCreation::loadLocations()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     std::ifstream file("locations.json");
 
@@ -117,7 +117,7 @@ void gameDataCreation::loadLocations()
 
 void gameDataCreation::loadAbilities()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     std::ifstream file("abilities.json");
 
@@ -161,7 +161,7 @@ void gameDataCreation::loadItems()
 
 void gameDataCreation::setseed()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     std::cout << "custom seed?\n";
 
@@ -192,7 +192,7 @@ void gameDataCreation::setseed()
 
 void gameDataCreation::setClass()
 {
-    setupAndUtility util;
+    setupAndUtility util(gm);
 
     util.vectorCreation(characters.size());
     std::cout << "Choose a character:\n";
@@ -225,9 +225,9 @@ void gameDataCreation::locationAction()
 {  
     locationActions = 
     {
-        {"basicCombat", []() {combat currentFight; currentFight.basicCombat(); }},
-        { "shopEntry", []() {activities activity; activity.shopEntry(); }},
-        {"leave", []() {activities activity; activity.leaveFunction(); }}
+        {"basicCombat", [=]() {combat currentFight(gm); currentFight.basicCombat(); }},
+        { "shopEntry", [=]() {activities activity(gm); activity.shopEntry(); }},
+        {"leave", [=]() {activities activity(gm); activity.leaveFunction(); }}
     };
 }
 
@@ -241,8 +241,8 @@ void gameDataCreation::unorderedMapMaker()
 
     abilityAttributeAssigner =
     {
-        {"damage",  []() {combat currentFight; currentFight.abilityDamage(currentAbilityAmount); }},
-        {"burn", []() {combat currentFight; currentFight.abilityDoT(currentAbilitySpecialAmount); }}
+        {"damage",  [=]() {combat currentFight(gm); currentFight.abilityDamage(currentAbilityAmount); }},
+        {"burn", [=]() {combat currentFight(gm); currentFight.abilityDoT(currentAbilitySpecialAmount); }}
     };
     /*
     factionAssigner =
