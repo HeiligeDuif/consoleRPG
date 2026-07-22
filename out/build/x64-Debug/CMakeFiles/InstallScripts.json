@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/programming/consoleGame/consoleGame/out/build/x64-Debug/cmake_install.cmake",
-		"C:/programming/consoleGame/consoleGame/out/build/x64-Debug/_deps/nlohmann_json-build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
