@@ -1,0 +1,5 @@
+﻿  combat.cpp
+C:\programming\consoleGame\consoleGame\combat.cpp(41,67): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  consoleGame.vcxproj -> C:\programming\consoleGame\x64\Debug\consoleGame.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

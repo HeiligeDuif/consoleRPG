@@ -1,0 +1,14 @@
+[
+  {
+    "name": "sword",
+    "bonus": "attack",
+    "value": 1,
+    "price": 2
+  },
+  {
+    "name": "armour",
+    "bonus": "hp",
+    "value": 1,
+    "price": 1
+  }
+]

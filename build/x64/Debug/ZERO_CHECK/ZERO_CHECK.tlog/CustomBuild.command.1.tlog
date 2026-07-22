@@ -1,0 +1,10 @@
+^C:\PROGRAMMING\CONSOLEGAME\CONSOLEGAME\BUILD\CMAKEFILES\3D635940E37DC8F610B051C4B6704951\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/programming/consoleGame/consoleGame -BC:/programming/consoleGame/consoleGame/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/programming/consoleGame/consoleGame/build/consoleGame.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

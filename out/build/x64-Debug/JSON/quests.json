@@ -1,0 +1,10 @@
+[
+  {
+    "name": "slay squiwéls",
+    "type": "defeat",
+    "targetAmount": 5,
+    "completed": false,
+    "rewardType": "gold",
+    "rewardAmount": 5
+  }
+]

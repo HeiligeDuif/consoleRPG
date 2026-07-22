@@ -16,7 +16,7 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 
     for (int i = 0; i < AmountOfRoadChoices; i++)
     {
-        std::cout << gm.charPossibilities[i] << ". " << "Road " << gm.charPossibilities[i] << " to " << locations[i].name << ".\n";
+        std::cout << gm.charPossibilities[i] << ". " << "Road " << gm.charPossibilities[i] << " to " << gm.locations[i].name << ".\n";
     }
 
     char roadChoiceMain = util.correctInput();
@@ -28,28 +28,28 @@ void mainGameLoop::splitOptions(int chosenRoad)
 {
     do
     {
-        currentRegion = locations[chosenRoad].name;
+        currentRegion = gm.locations[chosenRoad].name;
 
-        if (locations[chosenRoad].beenHere == false)
+        if (gm.locations[chosenRoad].beenHere == false)
         {
-            locations[chosenRoad].beenHere = true;
+            gm.locations[chosenRoad].beenHere = true;
             proximityCounter++;
         }
 
         setupAndUtility util(gm);
 
-        util.vectorCreation(locations[chosenRoad].possibleActions.size());
+        util.vectorCreation(gm.locations[chosenRoad].possibleActions.size());
         std::cout << "What do you want to do?\n";
-        for (int i = 0; i < locations[chosenRoad].possibleActions.size(); i++)
+        for (int i = 0; i < gm.locations[chosenRoad].possibleActions.size(); i++)
         {
-            std::cout << gm.charPossibilities[i] << ". " << locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
+            std::cout << gm.charPossibilities[i] << ". " << gm.locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
         }
         char chosenOption = util.correctInput();
         std::cout << "You chose option: " << chosenOption << "\n";
         
-        if (locationActions.contains(locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
+        if (locationActions.contains(gm.locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
         {
-            locationActions[locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction](); //execute function tied to string in JSON file
+            locationActions[gm.locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction](); //execute function tied to string in JSON file
         }
         else
         {

@@ -1,0 +1,9 @@
+# ninja log v7
+43	3110	8064256056772811	CMakeFiles/consoleGame.dir/src/gameManager.cpp.obj	23a2e2ba00de834d
+35	3142	8064256056702811	CMakeFiles/consoleGame.dir/src/setupAndUtility.cpp.obj	4c60cacbd3b8f04c
+12	3147	8064256056467676	CMakeFiles/consoleGame.dir/src/combat.cpp.obj	f60a5878e1234b79
+6	3152	8064256056407695	CMakeFiles/consoleGame.dir/src/activities.cpp.obj	10d040ebdc41795e
+29	3263	8064256056637730	CMakeFiles/consoleGame.dir/src/mainLoop.cpp.obj	574d8d6a488ab01a
+18	3294	8064256056527688	CMakeFiles/consoleGame.dir/src/consoleGame.cpp.obj	3227fd38c7a9946
+23	3725	8064256056577726	CMakeFiles/consoleGame.dir/src/consoleGameData.cpp.obj	3f383351d5049349
+3726	4461	8064256093607135	consoleGame.exe	cad028d737dc8497

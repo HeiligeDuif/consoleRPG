@@ -6,14 +6,6 @@ int currentCombatEnemyCurrentHP = 1;
 
 uint32_t seedStart;
 
-std::vector<character> characters;
-std::vector<enemy> enemies;
-std::vector<location> locations;
-
-std::vector<ability> abilities;
-std::vector<ability> knownAbilities;
-std::vector<ability> equippedAbilities;
-
 std::vector<action> actions;
 std::vector<item> items;
 std::vector<quest> quests;
@@ -34,11 +26,11 @@ std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 void gameDataCreation::gameDataGenerator()
 {
     setupAndUtility util(gm);
-    gamedataBase.reserve(gamedataBase.size() + characters.size()+enemies.size()+locations.size()+items.size());
+    gamedataBase.reserve(gamedataBase.size() + gm.characters.size()+gm.enemies.size()+gm.locations.size()+items.size());
 
-    util.addToDataBase<character>(characters);
-    util.addToDataBase<enemy>(enemies);
-    util.addToDataBase<location>(locations);
+    util.addToDataBase<character>(gm.characters);
+    util.addToDataBase<enemy>(gm.enemies);
+    util.addToDataBase<location>(gm.locations);
     util.addToDataBase<item>(items);
 
     std::cout << "succesfully loaded " << gamedataBase.size() << " items to database." << "\n";
@@ -46,7 +38,7 @@ void gameDataCreation::gameDataGenerator()
 
 void gameDataCreation::loadEnemies()
 {
-    std::ifstream file("enemies.json");
+    std::ifstream file("JSON/enemies.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");
@@ -54,9 +46,9 @@ void gameDataCreation::loadEnemies()
     json j;
     file >> j;
 
-    enemies = j.get<std::vector<enemy>>();
+    gm.enemies = j.get<std::vector<enemy>>();
 
-    for (const auto& c : enemies) {
+    for (const auto& c : gm.enemies) {
         std::cout << "Succesfully loaded enemies: " << c.name << " (max HP: " << c.hpMax << ")" << "\n";
         wait(20);
     }
@@ -67,7 +59,7 @@ void gameDataCreation::loadCharacters()
 {
     setupAndUtility util(gm);
 
-    std::ifstream file("characters.json");
+    std::ifstream file("JSON/characters.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");;
@@ -76,12 +68,12 @@ void gameDataCreation::loadCharacters()
     json j;
     file >> j;
 
-    characters = j.get<std::vector<character>>();
-    size_t amountOfCharacters = characters.size();
+    gm.characters = j.get<std::vector<character>>();
+    size_t amountOfCharacters = gm.characters.size();
 
     util.vectorCreation(amountOfCharacters);
 
-    for (const auto& c : characters) {
+    for (const auto& c : gm.characters) {
         std::cout << "Succesfully loaded characters: " << c.name << " (max HP: " << c.hpMax << ")" << "\n";
         wait(20);
     }
@@ -92,7 +84,7 @@ void gameDataCreation::loadLocations()
 {
     setupAndUtility util(gm);
 
-    std::ifstream file("locations.json");
+    std::ifstream file("JSON/locations.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");;
@@ -101,12 +93,12 @@ void gameDataCreation::loadLocations()
     json j;
     file >> j;
 
-    locations = j.get<std::vector<location>>();
-    size_t amountOfLocations = locations.size();
+    gm.locations = j.get<std::vector<location>>();
+    size_t amountOfLocations = gm.locations.size();
 
     util.vectorCreation(amountOfLocations);
 
-    for (const auto& c : locations) {
+    for (const auto& c : gm.locations) {
         std::cout << "Succesfully loaded locations: " << c.name << "\n";
         wait(20);
     }
@@ -117,7 +109,7 @@ void gameDataCreation::loadAbilities()
 {
     setupAndUtility util(gm);
 
-    std::ifstream file("abilities.json");
+    std::ifstream file("JSON/abilities.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");;
@@ -126,12 +118,12 @@ void gameDataCreation::loadAbilities()
     json j;
     file >> j;
 
-    abilities = j.get<std::vector<ability>>();
-    size_t amountOfAbilities = abilities.size();
+    gm.abilities = j.get<std::vector<ability>>();
+    size_t amountOfAbilities = gm.abilities.size();
 
     util.vectorCreation(amountOfAbilities);
 
-    for (const auto& c : abilities) {
+    for (const auto& c : gm.abilities) {
         std::cout << "Succesfully loaded abilities: " << c.name << "\n";
         wait(20);
     }
@@ -140,7 +132,7 @@ void gameDataCreation::loadAbilities()
 
 void gameDataCreation::loadItems()
 {
-    std::ifstream file("items.json");
+    std::ifstream file("JSON/items.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");;
@@ -159,7 +151,7 @@ void gameDataCreation::loadItems()
 
 void gameDataCreation::loadQuests()
 {
-    std::ifstream file("quests.json");
+    std::ifstream file("JSON/quests.json");
 
     if (!file.is_open()) {
         throw std::runtime_error("Can't find JSON file!");;
@@ -212,29 +204,29 @@ void gameDataCreation::setClass()
 {
     setupAndUtility util(gm);
 
-    util.vectorCreation(characters.size());
+    util.vectorCreation(gm.characters.size());
     std::cout << "Choose a character:\n";
 
     for (int i = 0; i < gm.charPossibilities.size(); i++)
     {
         std::cout << gm.charPossibilities[i]
             << ". "
-            << characters[i].name << RED << " [ max HP: "
-            << characters[i].hpMax << BLUE << " | ATK: "
-            << characters[i].attack << RESET << "]\n";;
+            << gm.characters[i].name << RED << " [ max HP: "
+            << gm.characters[i].hpMax << BLUE << " | ATK: "
+            << gm.characters[i].attack << RESET << "]\n";;
     }
 
     char playerChoice = util.correctInput();
 
     int characterChoiceInt = static_cast<int>(playerChoice) - 'A';
 
-    std::cout << "You chose: " << characters[characterChoiceInt].name << "\n";
+    std::cout << "You chose: " << gm.characters[characterChoiceInt].name << "\n";
 
-    player = characters[characterChoiceInt];
+    player = gm.characters[characterChoiceInt];
 
     if (player.name == "Wizard")
     {
-        util.unlockAbility(abilities[0]);
+        util.unlockAbility(gm.abilities[0]);
     }
 
     playerCurrentHP = player.hpMax;

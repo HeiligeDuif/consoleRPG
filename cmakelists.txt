@@ -35,7 +35,7 @@ target_include_directories(consoleGame PUBLIC include)
 target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json)
 set_target_properties(consoleGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-set(JSON_FILES abilities.json characters.json enemies.json items.json quests.json locations.json)
+set(JSON_FILES JSON/abilities.json JSON/characters.json JSON/enemies.json JSON/items.json JSON/quests.json JSON/locations.json)
 
 foreach(json_file ${JSON_FILES})
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${json_file}" 
@@ -46,4 +46,10 @@ add_custom_command(TARGET consoleGame POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_CURRENT_SOURCE_DIR}/graphics"
     "$<TARGET_FILE_DIR:consoleGame>/graphics"
+)
+
+add_custom_command(TARGET consoleGame POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/JSON"
+    "$<TARGET_FILE_DIR:consoleGame>/JSON"
 )

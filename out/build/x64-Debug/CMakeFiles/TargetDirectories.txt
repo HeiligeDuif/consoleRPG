@@ -1,0 +1,5 @@
+C:/programming/consoleGame/consoleGame/out/build/x64-Debug/CMakeFiles/consoleGame.dir
+C:/programming/consoleGame/consoleGame/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/programming/consoleGame/consoleGame/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/programming/consoleGame/consoleGame/out/build/x64-Debug/_deps/nlohmann_json-build/CMakeFiles/edit_cache.dir
+C:/programming/consoleGame/consoleGame/out/build/x64-Debug/_deps/nlohmann_json-build/CMakeFiles/rebuild_cache.dir

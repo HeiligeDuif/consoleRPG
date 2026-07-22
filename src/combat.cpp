@@ -97,7 +97,7 @@ std::vector<enemy*> availableEnemies;
             "Defend",
         };
 
-        if (equippedAbilities.size() > 0)
+        if (gm.equippedAbilities.size() > 0)
         {
             playerCombatOptions.push_back("Ability");
         }
@@ -128,29 +128,29 @@ std::vector<enemy*> availableEnemies;
             playerAction = 'C';
             std::cout << "What ability do you want to use?" << "\n";
 
-            util.vectorCreation(equippedAbilities.size());
+            util.vectorCreation(gm.equippedAbilities.size());
 
-            for (int i = 0; i < equippedAbilities.size(); i++)
+            for (int i = 0; i < gm.equippedAbilities.size(); i++)
             {
-                std::cout << gm.charPossibilities[i] << ". " << equippedAbilities[i].name << "\n";
+                std::cout << gm.charPossibilities[i] << ". " << gm.equippedAbilities[i].name << "\n";
             }
             chosenAbility = util.correctInput() - 'A';
 
-            currentAbilityAmount = equippedAbilities[chosenAbility].amount;
-            if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].effect))
+            currentAbilityAmount = gm.equippedAbilities[chosenAbility].amount;
+            if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].effect))
             {
-                abilityAttributeAssigner[equippedAbilities[chosenAbility].effect]();
+                abilityAttributeAssigner[gm.equippedAbilities[chosenAbility].effect]();
             }
             else
             {
                 std::cout << "You fucked up something, didn't you?" << "\n";
             }
 
-            currentAbilitySpecialAmount = equippedAbilities[chosenAbility].specialAmount;
-            std::cout << equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
-            if (abilityAttributeAssigner.contains(equippedAbilities[chosenAbility].special))
+            currentAbilitySpecialAmount = gm.equippedAbilities[chosenAbility].specialAmount;
+            std::cout << gm.equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
+            if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].special))
             {
-                abilityAttributeAssigner[equippedAbilities[chosenAbility].special]();
+                abilityAttributeAssigner[gm.equippedAbilities[chosenAbility].special]();
             }
             else
             {
@@ -200,9 +200,9 @@ std::vector<enemy*> availableEnemies;
 
     void combat::abilityDamage(int damageOfAbility)
     {
-        std::cout << "You casted: " << equippedAbilities[chosenAbility].name << "!" << "\n";
-        std::cout << "the enemy took " << RED << equippedAbilities[chosenAbility].amount << RESET << " damage!" << "\n";
-        currentCombatEnemyCurrentHP -= equippedAbilities[chosenAbility].amount;
+        std::cout << "You casted: " << gm.equippedAbilities[chosenAbility].name << "!" << "\n";
+        std::cout << "the enemy took " << RED << gm.equippedAbilities[chosenAbility].amount << RESET << " damage!" << "\n";
+        currentCombatEnemyCurrentHP -= gm.equippedAbilities[chosenAbility].amount;
     }
 
     void combat::abilityDoT(int duration)
@@ -217,7 +217,7 @@ std::vector<enemy*> availableEnemies;
         {
             currentCombatEnemyCurrentHP--;
             burnTimer--;
-            std::cout << "The enemy " << equippedAbilities[chosenAbility].special <<"s! he takes: " << RED << "1" << RESET << " damage!" << "\n";
+            std::cout << "The enemy " << gm.equippedAbilities[chosenAbility].special <<"s! he takes: " << RED << "1" << RESET << " damage!" << "\n";
             std::cout << "The enemy has: " << currentCombatEnemyCurrentHP << " HP left!" << "\n";
         }
     }

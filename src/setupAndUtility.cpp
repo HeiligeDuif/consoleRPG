@@ -87,5 +87,5 @@ int setupAndUtility::seedIteration(int divisionAmount)
 
 void setupAndUtility::unlockAbility(ability newAbility)
 {
-    equippedAbilities.push_back(newAbility);
+    gm.equippedAbilities.push_back(newAbility);
 }

@@ -1,0 +1,48 @@
+[
+  {
+    "name": "Strange looking Hobo",
+    "hpMax": 4,
+    "attack": 2,
+    "goldReward": 1,
+    "difficultyIndicator": 0,
+    "faction": "village",
+    "region": "village"
+
+  },
+  {
+    "name": "Small Slime",
+    "hpMax": 6,
+    "attack": 1,
+    "goldReward": 1,
+    "difficultyIndicator": 0,
+    "faction": "village",
+    "region": "village"
+  },
+  {
+    "name": "Boar",
+    "hpMax": 8,
+    "attack": 2,
+    "goldReward": 2,
+    "difficultyIndicator": 0,
+    "faction": "animal",
+    "region": "forest"
+  },
+  {
+    "name": "Bamibal",
+    "hpMax": 99999,
+    "attack": 1232,
+    "goldReward": 156235452,
+    "difficultyIndicator": 9,
+    "faction": "village",
+    "region": "caldruki"
+  },
+  {
+    "name": "squirrel",
+    "hpMax": 3,
+    "attack": 1,
+    "goldReward": 0,
+    "difficultyIndicator": 9,
+    "faction": "idc",
+    "region": "forest"
+  }
+]

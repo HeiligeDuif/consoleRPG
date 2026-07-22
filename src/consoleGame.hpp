@@ -146,15 +146,6 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(quest, name, type, targetAmount, completed, rewardType, rewardAmount)
 
 
-
-extern std::vector<enemy> enemies;
-extern std::vector<character> characters;
-extern std::vector<location> locations;
-
-extern std::vector<ability> abilities;
-extern std::vector<ability> knownAbilities;
-extern std::vector<ability> equippedAbilities;
-
 extern int currentAbilityAmount;
 extern int currentAbilitySpecialAmount;
 extern ability newAbility;
@@ -196,6 +187,14 @@ public:
     void startGame();
     uint32_t seedValue;
     std::vector<char> charPossibilities;
+
+    std::vector<enemy> enemies;
+    std::vector<character> characters;
+    std::vector<location> locations;
+
+    std::vector<ability> abilities;
+    std::vector<ability> knownAbilities;
+    std::vector<ability> equippedAbilities;
 private:
 
 };
