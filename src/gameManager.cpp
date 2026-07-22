@@ -12,6 +12,7 @@ void gameManager::startGame()
     gameData.locationAction();
 
     gameData.loadItems();
+    gameData.loadQuests();
     gameData.unorderedMapMaker();
 
     gameData.gameDataGenerator();

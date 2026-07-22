@@ -66,7 +66,7 @@ struct character:public structSearcher
     }
 };
 
-struct enemy :public structSearcher
+struct enemy:public structSearcher
 {
     std::string name;
     int hpMax;
@@ -127,12 +127,23 @@ struct item :public structSearcher
     }
 };
 
+struct quest
+{
+    std::string name;
+    std::string type;
+    int targetAmount;
+    bool completed;
+    std::string rewardType;
+    int rewardAmount;
+};
+
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, difficultyIndicator, faction, region)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, specialAmount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(quest, name, type, targetAmount, completed, rewardType, rewardAmount)
 
 
 
@@ -150,6 +161,8 @@ extern ability newAbility;
 
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
+
+extern std::vector<quest> quests;
 
 extern enemy currentCombatEnemy;
 
@@ -182,7 +195,6 @@ class gameManager
 public:
     void startGame();
     uint32_t seedValue;
-    int amountOfChoices;
     std::vector<char> charPossibilities;
 private:
 
@@ -257,6 +269,7 @@ public:
     void loadLocations();
     void loadAbilities();
     void loadItems();
+    void loadQuests();
     void setseed();
     void setClass();
     void locationAction();
@@ -294,6 +307,7 @@ public:
     void shopEntry();
     void canPlayerBuy(int shopChoice);
     void leaveFunction();
+    void getQuest();
 private:
     gameManager& gm;
 };

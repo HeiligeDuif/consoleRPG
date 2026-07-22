@@ -65,3 +65,8 @@ void activities::leaveFunction()
 {
     leaving = true;
 }
+
+void activities::getQuest()
+{
+
+}

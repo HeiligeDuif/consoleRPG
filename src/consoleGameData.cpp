@@ -1,14 +1,11 @@
 #include "consoleGame.hpp"
 
-
-int amountOfChoices = 0;
 int playerCurrentHP = 1;
 int playerCurrentGold = 0;
 int currentCombatEnemyCurrentHP = 1;
-uint32_t seedValue;
+
 uint32_t seedStart;
 
-std::vector<char> charPossibilities;
 std::vector<character> characters;
 std::vector<enemy> enemies;
 std::vector<location> locations;
@@ -19,6 +16,7 @@ std::vector<ability> equippedAbilities;
 
 std::vector<action> actions;
 std::vector<item> items;
+std::vector<quest> quests;
 character player;
 
 std::map<std::string, std::function<void()>> locationActions;
@@ -159,6 +157,26 @@ void gameDataCreation::loadItems()
     EMPTYSCREEN();
 }
 
+void gameDataCreation::loadQuests()
+{
+    std::ifstream file("quests.json");
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Can't find JSON file!");;
+    }
+    json j;
+    file >> j;
+
+    quests = j.get<std::vector<quest>>();
+
+    for (const auto& c : quests) {
+        std::cout << "Succesfully loaded quests: " << c.name << " (quest type: " << c.type << ")" << "\n";
+        wait(40);
+    }
+    EMPTYSCREEN();
+}
+
+
 void gameDataCreation::setseed()
 {
     setupAndUtility util(gm);
@@ -172,21 +190,21 @@ void gameDataCreation::setseed()
     if (util.correctInput() == 'A')
     {
         std::cout << "Enter seed (8 numbers)\n";
-        std::cin >> seedValue;
+        std::cin >> gm.seedValue;
     }
     else {
         std::random_device dev;
         std::mt19937 rng(dev());
         std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 99999999);
 
-        seedValue = dist6(rng);
+        gm.seedValue = dist6(rng);
     }
-    std::cout << "Seed:" << std::setfill('0') << std::setw(8) << seedValue << "\n";
-    if(seedValue==11111111)
+    std::cout << "Seed:" << std::setfill('0') << std::setw(8) << gm.seedValue << "\n";
+    if(gm.seedValue==11111111)
     {
         playerCurrentGold = 100000;
     }
-    seedStart = seedValue;
+    seedStart = gm.seedValue;
     EMPTYSCREEN();
 }
 
@@ -196,9 +214,10 @@ void gameDataCreation::setClass()
 
     util.vectorCreation(characters.size());
     std::cout << "Choose a character:\n";
-    for (int i = 0; i < charPossibilities.size(); i++)
+
+    for (int i = 0; i < gm.charPossibilities.size(); i++)
     {
-        std::cout << charPossibilities[i]
+        std::cout << gm.charPossibilities[i]
             << ". "
             << characters[i].name << RED << " [ max HP: "
             << characters[i].hpMax << BLUE << " | ATK: "
@@ -227,7 +246,8 @@ void gameDataCreation::locationAction()
     {
         {"basicCombat", [=]() {combat currentFight(gm); currentFight.basicCombat(); }},
         { "shopEntry", [=]() {activities activity(gm); activity.shopEntry(); }},
-        {"leave", [=]() {activities activity(gm); activity.leaveFunction(); }}
+        {"leave", [=]() {activities activity(gm); activity.leaveFunction(); }},
+        {"getQuest", [=]() {activities activity(gm); activity.getQuest(); }}
     };
 }
 
