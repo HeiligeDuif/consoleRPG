@@ -1,4 +1,0 @@
-C:/programming/consoleGame/consoleGame/build/CMakeFiles/consoleGame.dir
-C:/programming/consoleGame/consoleGame/build/CMakeFiles/ALL_BUILD.dir
-C:/programming/consoleGame/consoleGame/build/CMakeFiles/ZERO_CHECK.dir
-C:/programming/consoleGame/consoleGame/build/_deps/nlohmann_json-build/CMakeFiles/ALL_BUILD.dir
