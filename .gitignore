@@ -1,0 +1,21 @@
+# Visual Studio & CMake build outputs
+/build/
+/out/
+.vs/
+
+# Visual Studio user-specific files
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Compiled binaries
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
