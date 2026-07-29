@@ -5,5 +5,12 @@
     "amount": 3,
     "special": "burn",
     "specialAmount": 3
+  },
+  {
+    "name": "Power of the Soul scream",
+    "effect": "damage",
+    "amount": 9001,
+    "special": "soulScream",
+    "specialAmount": 69
   }
 ]

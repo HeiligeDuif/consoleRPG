@@ -23,6 +23,12 @@
     "name": "Wizard",
     "hpMax": 5,
     "attack": 2,
-    "startingAbility":  "fireball"
+    "startingAbility": "fireball"
+  },
+  {
+    "name": "Necroscreamer",
+    "hpMax": 2,
+    "attack": 60,
+    "startingAbility": "Power of the Soul scream"
   }
 ]

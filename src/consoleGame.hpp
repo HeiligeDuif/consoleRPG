@@ -208,6 +208,8 @@ public:
     int currentAbilityAmount;
     int currentAbilitySpecialAmount;
     ability newAbility;
+
+    float soulCounter = 0;
 private:
 
 };
@@ -299,6 +301,7 @@ public:
     void basicCombat();
     std::vector<enemy*> createEnemySample();
     void abilityDamage(int damageOfAbility);
+    void abilitySoulScream(int soulScreamAmount);
     void abilityDoT(int duration);
 private:
     gameManager& gm;

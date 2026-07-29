@@ -145,7 +145,7 @@ std::vector<enemy*> availableEnemies;
             }
 
             gm.currentAbilitySpecialAmount = gm.equippedAbilities[chosenAbility].specialAmount;
-            std::cout << gm.equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
+            //std::cout << gm.equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
             if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].special))
             {
                 abilityAttributeAssigner[gm.equippedAbilities[chosenAbility].special]();
@@ -207,6 +207,20 @@ std::vector<enemy*> availableEnemies;
     {
         burnTimer = duration;
         //std::cout << "DEBUG: burnTimer 1:" << burnTimer << "\n";
+    }
+
+    void combat::abilitySoulScream(int soulScreamAmount)
+    {
+        std::cout << "The enemy screams in agony, as you retrieve their soul from their body..." << "\n";
+        gm.soulCounter++;
+        std::cout << "You now have " << gm.soulCounter << " soul"; 
+        if (gm.soulCounter != 1)
+        {
+            std::cout << "s";
+        }
+        std::cout << "." << "\n";
+        std::cout << "The enemy has a dead look in his eyes, and seems less affected by his wounds..." << "\n";
+        currentCombatEnemyCurrentHP = currentCombatEnemyCurrentHP + soulScreamAmount;
     }
 
     void combat::endTurnEffects()
