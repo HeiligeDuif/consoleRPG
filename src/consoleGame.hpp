@@ -5,7 +5,8 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include <array>#include <vector>
+#include <array>
+#include <vector>
 #include <cctype>
 #include <string>
 #include <limits>
@@ -60,6 +61,7 @@ struct character:public structSearcher
     std::string name;
     int hpMax;
     int attack;
+    std::optional<std::string> startingAbility;
 
     bool matches(const std::string& searchItem) const override {
         return name == searchItem;
@@ -138,17 +140,24 @@ struct quest
 };
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, difficultyIndicator, faction, region)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(character, name, hpMax, attack)
+//JSON custom loader
+inline void from_json(const nlohmann::json& j, character& c) {
+    c.name = j.at("name").get<std::string>();
+    c.hpMax = j.at("hpMax").get<int>();
+    c.attack = j.at("attack").get<int>();
+
+    if (j.contains("startingAbility") && !j["startingAbility"].is_null()) {
+        c.startingAbility = j.at("startingAbility").get<std::string>();
+    }
+    else {
+        c.startingAbility = std::nullopt;
+    }
+}
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, specialAmount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(quest, name, type, targetAmount, completed, rewardType, rewardAmount)
-
-
-extern int currentAbilityAmount;
-extern int currentAbilitySpecialAmount;
-extern ability newAbility;
 
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
@@ -195,6 +204,10 @@ public:
     std::vector<ability> abilities;
     std::vector<ability> knownAbilities;
     std::vector<ability> equippedAbilities;
+
+    int currentAbilityAmount;
+    int currentAbilitySpecialAmount;
+    ability newAbility;
 private:
 
 };

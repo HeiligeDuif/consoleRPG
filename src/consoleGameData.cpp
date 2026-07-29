@@ -1,5 +1,7 @@
 #include "consoleGame.hpp"
 
+std::vector<std::unique_ptr<structSearcher>> gamedataBase;
+
 int playerCurrentHP = 1;
 int playerCurrentGold = 0;
 int currentCombatEnemyCurrentHP = 1;
@@ -14,6 +16,7 @@ character player;
 std::map<std::string, std::function<void()>> locationActions;
 std::map<std::string, int*> valueAndStatConnector;
 std::map < std::string, std::function<void()>> abilityAttributeAssigner;
+std::map<std::string, ability*> abilityAssigner;
 std::map<std::string, int*> factionAssigner;
 std::map<std::string, int*> regionAssigner;
 
@@ -21,7 +24,6 @@ std::string region;
 std::string faction;
 
 std::string currentRegion;
-std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
 void gameDataCreation::gameDataGenerator()
 {
@@ -127,6 +129,9 @@ void gameDataCreation::loadAbilities()
         std::cout << "Succesfully loaded abilities: " << c.name << "\n";
         wait(20);
     }
+    for (auto& ab : gm.abilities) {
+        abilityAssigner[ab.name] = &ab;
+    }
     EMPTYSCREEN();
 }
 
@@ -224,9 +229,9 @@ void gameDataCreation::setClass()
 
     player = gm.characters[characterChoiceInt];
 
-    if (player.name == "Wizard")
+    if (player.startingAbility.has_value())
     {
-        util.unlockAbility(gm.abilities[0]);
+        util.unlockAbility(*abilityAssigner[player.startingAbility.value()]);
     }
 
     playerCurrentHP = player.hpMax;
@@ -253,8 +258,8 @@ void gameDataCreation::unorderedMapMaker()
 
     abilityAttributeAssigner =
     {
-        {"damage",  [=]() {combat currentFight(gm); currentFight.abilityDamage(currentAbilityAmount); }},
-        {"burn", [=]() {combat currentFight(gm); currentFight.abilityDoT(currentAbilitySpecialAmount); }}
+        {"damage",  [=]() {combat currentFight(gm); currentFight.abilityDamage(gm.currentAbilityAmount); }},
+        {"burn", [=]() {combat currentFight(gm); currentFight.abilityDoT(gm.currentAbilitySpecialAmount); }}
     };
     /*
     factionAssigner =

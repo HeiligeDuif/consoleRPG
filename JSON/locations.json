@@ -8,6 +8,10 @@
         "resultOfAction": "shopEntry"
       },
       {
+        "nameOfAction": "Get a quest",
+        "resultOfAction": "getQuest"
+      },
+      {
         "nameOfAction": "Leave the village",
         "resultOfAction": "leave"
       }

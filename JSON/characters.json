@@ -22,6 +22,7 @@
   {
     "name": "Wizard",
     "hpMax": 5,
-    "attack": 2
+    "attack": 2,
+    "startingAbility":  "fireball"
   }
 ]

@@ -1,8 +1,6 @@
 #include "consoleGame.hpp"
 enemy currentCombatEnemy;
 char playerAction;
-int currentAbilityAmount;
-int currentAbilitySpecialAmount;
 int chosenAbility;
 enemy currentActor;
 std::vector<structSearcher> currentTurnCharacter;
@@ -136,7 +134,7 @@ std::vector<enemy*> availableEnemies;
             }
             chosenAbility = util.correctInput() - 'A';
 
-            currentAbilityAmount = gm.equippedAbilities[chosenAbility].amount;
+            gm.currentAbilityAmount = gm.equippedAbilities[chosenAbility].amount;
             if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].effect))
             {
                 abilityAttributeAssigner[gm.equippedAbilities[chosenAbility].effect]();
@@ -146,7 +144,7 @@ std::vector<enemy*> availableEnemies;
                 std::cout << "You fucked up something, didn't you?" << "\n";
             }
 
-            currentAbilitySpecialAmount = gm.equippedAbilities[chosenAbility].specialAmount;
+            gm.currentAbilitySpecialAmount = gm.equippedAbilities[chosenAbility].specialAmount;
             std::cout << gm.equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
             if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].special))
             {
