@@ -1,6 +1,7 @@
 // functies.h
 #ifndef consoleGame_HPP
 #define consoleGame_HPP
+#define PDC_NCMOUSE
 
 #include <iostream>
 
@@ -241,12 +242,13 @@ public:
     setupAndUtility(gameManager& manager) : gm(manager) {}
 
     void vectorCreation(size_t);
-    char correctInput();
+    char correctInput(int menuStartY);
     void printAscii(const std::string& fileName);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
     void unlockAbility(ability ewAbility);
     void setConsoleOutputUTF8();
+    int handleMenuClickOrKey(int totalOptions);
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)

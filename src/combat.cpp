@@ -114,13 +114,16 @@ std::vector<enemy*> availableEnemies;
 
         printw("It is your turn, choose your action:\n");
         refresh();
+        int menuStartY, dummyX;
+        getyx(stdscr, menuStartY, dummyX);
+
         for (int i = 0; i < playerCombatOptions.size(); i++)
         {
             printw("%c. %s \n", gm.charPossibilities[i], playerCombatOptions[i].c_str());
             refresh();
         }
 
-        switch (util.correctInput())
+        switch (util.correctInput(menuStartY))
         {
         case 'A':
             printw("You attack the enemy for %i damage.\n", player.attack);
@@ -142,12 +145,15 @@ std::vector<enemy*> availableEnemies;
 
             util.vectorCreation(gm.equippedAbilities.size());
 
+            int menuStartY, dummyX;
+            getyx(stdscr, menuStartY, dummyX);
+
             for (int i = 0; i < gm.equippedAbilities.size(); i++)
             {
                 printw("%c. %s \n", gm.charPossibilities[i], gm.equippedAbilities[i].name.c_str());
                 refresh();
             }
-            chosenAbility = util.correctInput() - 'A';
+            chosenAbility = util.correctInput(menuStartY) - 'A';
 
             gm.currentAbilityAmount = gm.equippedAbilities[chosenAbility].amount;
             if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].effect))

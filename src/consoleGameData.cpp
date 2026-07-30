@@ -201,11 +201,14 @@ void gameDataCreation::setseed()
     printw("custom seed?\n");
     refresh();
 
+    int menuStartY, dummyX;
+    getyx(stdscr, menuStartY, dummyX);
+
     util.yesOrNoFunction();
 
     util.printAscii("warrior.txt");
 
-    if (util.correctInput() == 'A')
+    if (util.correctInput(menuStartY) == 'A')
     {
         printw("Enter seed (8 numbers)\n");
         refresh();
@@ -239,6 +242,9 @@ void gameDataCreation::setClass()
     util.vectorCreation(gm.characters.size());
     printw("Choose a character:\n");
 
+    int menuStartY, dummyX;
+    getyx(stdscr, menuStartY, dummyX);
+
     for (int i = 0; i < gm.charPossibilities.size(); i++)
     {
         printw("%c. %s", gm.charPossibilities[i], gm.characters[i].name.c_str());
@@ -255,7 +261,7 @@ void gameDataCreation::setClass()
     }
     refresh();
 
-    char playerChoice = util.correctInput();
+    char playerChoice = util.correctInput(menuStartY);
 
     int characterChoiceInt = static_cast<int>(playerChoice) - 'A';
 

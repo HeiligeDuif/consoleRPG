@@ -36,15 +36,28 @@ void setupAndUtility::vectorCreation(size_t amountOfChoices)
     }
 }
 
-char  setupAndUtility::correctInput()
+char  setupAndUtility::correctInput(int menuStartY)
 {
     bool succesfulInput = false;
-    do
+    while (true)
     {
-        char input = getch();
-        refresh();
+        int input = getch();
+        if (input == KEY_MOUSE)
+        {
+            MEVENT event;
+            if (getmouse(&event) != OK)
+                continue;
 
-        char inputUpper = std::toupper(input);
+            if (!(event.bstate & BUTTON1_CLICKED))
+                continue;
+
+            int row = event.y - menuStartY;
+
+            if (row >= 0 && row < gm.charPossibilities.size())
+                return gm.charPossibilities[row];
+        }
+
+        char inputUpper = std::toupper(static_cast<unsigned char>(input));
 
         for (int i = 0; i < gm.charPossibilities.size(); i++)
         {
@@ -55,6 +68,8 @@ char  setupAndUtility::correctInput()
                     attron(COLOR_PAIR(1));
                     printw("Please enter an available value.\n");
                     attroff(COLOR_PAIR(1));
+                    clear();
+                    refresh();
                     succesfulInput = false;
                 }
             }
@@ -66,13 +81,16 @@ char  setupAndUtility::correctInput()
                 return inputUpper;
             }
         }
-    } while (succesfulInput != true);
+    }
 }
 
 void setupAndUtility::yesOrNoFunction()
 {
     setupAndUtility util(gm);
     util.vectorCreation(yesOrNo.size());
+
+    int menuStartY, dummyX;
+    getyx(stdscr, menuStartY, dummyX);
 
     for (int i = 0; i < yesOrNo.size(); i++)
     {

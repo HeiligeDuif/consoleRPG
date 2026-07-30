@@ -14,12 +14,15 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 
     printw("You arrive at a split in the road. There are %i Possible ways. Which one will you take?\n", AmountOfRoadChoices);
 
+    int menuStartY, dummyX;
+    getyx(stdscr, menuStartY, dummyX);
+
     for (int i = 0; i < AmountOfRoadChoices; i++)
     {
         printw("%c. to the %s.\n",gm.charPossibilities[i], gm.locations[i].name.c_str());
     }
 
-    char roadChoiceMain = util.correctInput();
+    char roadChoiceMain = util.correctInput(menuStartY);
     int roadChoiceInt = roadChoiceMain - 65;
     printw("You chose the road to the %s \n", gm.locations[roadChoiceInt].name.c_str());
     return roadChoiceMain - 'A';
@@ -39,13 +42,18 @@ void mainGameLoop::splitOptions(int chosenRoad)
 
         setupAndUtility util(gm);
 
-        util.vectorCreation(gm.locations[chosenRoad].possibleActions.size());
         printw("What do you want to do?\n");
+
+        util.vectorCreation(gm.locations[chosenRoad].possibleActions.size());
+        
+        int menuStartY, dummyX;
+        getyx(stdscr, menuStartY, dummyX);
+
         for (int i = 0; i < gm.locations[chosenRoad].possibleActions.size(); i++)
         {
             printw("%c. %s \n", gm.charPossibilities[i], gm.locations[chosenRoad].possibleActions[i].nameOfAction.c_str());
         }
-        char chosenOption = util.correctInput();
+        char chosenOption = util.correctInput(menuStartY);
         printw("You chose option: %c \n", chosenOption);
         
         if (locationActions.contains(gm.locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))

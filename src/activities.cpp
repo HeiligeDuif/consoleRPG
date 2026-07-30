@@ -7,6 +7,7 @@ void activities::shopEntry()
     printw("We have these items for sale:\n");
     refresh();
     util.vectorCreation(items.size());
+
     for (int i = 0; i < items.size(); i++)
     {
         printw("%s, gives %d %s.\n",
@@ -19,14 +20,22 @@ void activities::shopEntry()
     printw("Do you want to buy something? \n");
     refresh();
 
+    int menuStartY, dummyX;
+    getyx(stdscr, menuStartY, dummyX);
+
     util.yesOrNoFunction();
-    if (util.correctInput() == 'A')
+    if (util.correctInput(menuStartY) == 'A')
     {
         printw("Which item? \n");
         refresh();
-        int shopOptions = items.size()+1;
+        int shopOptions = items.size();
         util.vectorCreation(shopOptions); //reset after yesOrNo changed it
+
+        int menuStartY, dummyX;
+        getyx(stdscr, menuStartY, dummyX);
+
         for (int i = 0; i < items.size(); i++)
+
         {
             printw("%c. %s for %d gold.\n",
                 gm.charPossibilities[i],
@@ -40,7 +49,7 @@ void activities::shopEntry()
 
         int shopChoiceInt;
 
-        char shopChoice = util.correctInput();
+        char shopChoice = util.correctInput(menuStartY);
         shopChoiceInt = static_cast<int>(shopChoice-'A');
         if (shopChoiceInt == items.size()) 
         {

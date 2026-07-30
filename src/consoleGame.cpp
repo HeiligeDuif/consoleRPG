@@ -3,6 +3,8 @@
 int main()
 {
     initscr();
+    mousemask(BUTTON1_CLICKED, nullptr);
+    keypad(stdscr, TRUE);
     cbreak();
     if (has_colors()) {
         start_color();
