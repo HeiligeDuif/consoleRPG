@@ -40,12 +40,6 @@ inline const char* RESET = "\033[0m";
 struct structSearcher;
 extern std::vector<std::unique_ptr<structSearcher>> gamedataBase;
 
-inline void EMPTYSCREEN()
-{
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
-    std::cout << "\033[2J\033[H" << std::flush;
-}
-
 inline void wait(int milliseconds)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
@@ -248,7 +242,7 @@ public:
 
     void vectorCreation(size_t);
     char correctInput();
-    void printAscii(std::string);
+    void printAscii(const std::string& fileName);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
     void unlockAbility(ability ewAbility);

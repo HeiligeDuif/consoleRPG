@@ -3,33 +3,52 @@
 void activities::shopEntry()
 {
     setupAndUtility util(gm);
-    std::cout << "Welcome to the shop!\n";
-    std::cout << "We have these items for sale:" << "\n"; //verteld dat de dingen te koop zijn
+    printw("Welcome to the shop!\n");
+    printw("We have these items for sale:\n");
+    refresh();
     util.vectorCreation(items.size());
     for (int i = 0; i < items.size(); i++)
     {
-        std::cout << items[i].name << ", gives " << items[i].value << " " << items[i].bonus << "." << "\n";
+        printw("%s, gives %d %s.\n",
+            items[i].name.c_str(),
+            items[i].value,
+            items[i].bonus.c_str());
+        refresh();
     }
 
-    std::cout << "Do you want to buy something?" << "\n";
+    printw("Do you want to buy something? \n");
+    refresh();
 
     util.yesOrNoFunction();
     if (util.correctInput() == 'A')
     {
-        std::cout << "Which item?" << "\n";
-        util.vectorCreation(items.size() + 1); //reset after yesOrNo changed it
+        printw("Which item? \n");
+        refresh();
+        int shopOptions = items.size()+1;
+        util.vectorCreation(shopOptions); //reset after yesOrNo changed it
         for (int i = 0; i < items.size(); i++)
         {
-            std::cout << gm.charPossibilities[i] << ". " << items[i].name << " for " << items[i].price << " gold." << "\n";
+            printw("%c. %s for %d gold.\n",
+                gm.charPossibilities[i],
+                items[i].name.c_str(),
+                items[i].price);
+            refresh();
         }
 
-        std::cout << gm.charPossibilities[static_cast<int>(items.size())] << ". " << "Nevermind" << "\n";
+        printw("%c. Nevermind \n", gm.charPossibilities[static_cast<int>(items.size())]);
+        refresh();
 
         int shopChoiceInt;
 
         char shopChoice = util.correctInput();
         shopChoiceInt = static_cast<int>(shopChoice-'A');
-        canPlayerBuy(shopChoiceInt);
+        if (shopChoiceInt == items.size()) 
+        {
+            return;
+        }
+        else {
+            canPlayerBuy(shopChoiceInt);
+        }
     }
     else 
     {
@@ -49,14 +68,21 @@ void activities::canPlayerBuy(int shopChoice)
         }
         else
         {
-            std::cout << RED << "ERROR: literally unplayable, devs pls fix" << "\n" << RESET;
+            attron(COLOR_PAIR(1));
+            printw("ERROR: literally unplayable, devs pls fix\n");
+            attroff(COLOR_PAIR(1));
+            refresh();
         }
-        std::cout << "You now have: " << playerCurrentGold << " gold." << "\n";
-        std::cout << "You know have: " << *valueAndStatConnector[items[shopChoice].bonus] << " " << items[shopChoice].bonus << "." << "\n";
+        printw("You now have: %i gold. \n", playerCurrentGold);
+        printw("You know have: %d %s.\n",
+            *valueAndStatConnector[items[shopChoice].bonus],
+            items[shopChoice].bonus.c_str());
+        refresh();
     }
     else
     {
-        std::cout << "You don't have enough money, earn some by defeating some monsters." << "\n";
+        printw("You don't have enough money, earn some by defeating some monsters.\n");
+        refresh();
     }
 }
 

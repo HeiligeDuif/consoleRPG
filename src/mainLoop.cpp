@@ -12,15 +12,16 @@ int mainGameLoop::multipleWaySplit(int AmountOfRoadChoices)
 
     util.vectorCreation(AmountOfRoadChoices);
 
-    std::cout << "You arrive at a split in the road. There are " << AmountOfRoadChoices << " Possible ways. Which one will you take?\n";
+    printw("You arrive at a split in the road. There are %i Possible ways. Which one will you take?\n", AmountOfRoadChoices);
 
     for (int i = 0; i < AmountOfRoadChoices; i++)
     {
-        std::cout << gm.charPossibilities[i] << ". " << "Road " << gm.charPossibilities[i] << " to " << gm.locations[i].name << ".\n";
+        printw("%c. to the %s.\n",gm.charPossibilities[i], gm.locations[i].name.c_str());
     }
 
     char roadChoiceMain = util.correctInput();
-    std::cout << "You chose road: " << roadChoiceMain << "\n";
+    int roadChoiceInt = roadChoiceMain - 65;
+    printw("You chose the road to the %s \n", gm.locations[roadChoiceInt].name.c_str());
     return roadChoiceMain - 'A';
 }
 
@@ -39,13 +40,13 @@ void mainGameLoop::splitOptions(int chosenRoad)
         setupAndUtility util(gm);
 
         util.vectorCreation(gm.locations[chosenRoad].possibleActions.size());
-        std::cout << "What do you want to do?\n";
+        printw("What do you want to do?\n");
         for (int i = 0; i < gm.locations[chosenRoad].possibleActions.size(); i++)
         {
-            std::cout << gm.charPossibilities[i] << ". " << gm.locations[chosenRoad].possibleActions[i].nameOfAction << "\n";
+            printw("%c. %s \n", gm.charPossibilities[i], gm.locations[chosenRoad].possibleActions[i].nameOfAction.c_str());
         }
         char chosenOption = util.correctInput();
-        std::cout << "You chose option: " << chosenOption << "\n";
+        printw("You chose option: %c \n", chosenOption);
         
         if (locationActions.contains(gm.locations[chosenRoad].possibleActions[chosenOption - 'A'].resultOfAction))
         {
@@ -53,7 +54,7 @@ void mainGameLoop::splitOptions(int chosenRoad)
         }
         else
         {
-            std::cout << "No action found [error]";
+            printw("No action found [error]");
         }
     } while (gm.leaving != true);
     gm.leaving = false;

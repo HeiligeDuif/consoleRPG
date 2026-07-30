@@ -8,21 +8,23 @@ void setupAndUtility::setConsoleOutputUTF8()
 #endif
 }
 
-void setupAndUtility::printAscii(std::string fileName) {
+void setupAndUtility::printAscii(const std::string& fileName)
+{
     std::string path = "graphics/" + fileName;
     std::ifstream file(path);
 
-    if (!file.is_open()) {
-        std::cerr << "ERROR: Can't find " << path << " !" << std::endl;
+    if (!file) {
+        mvprintw(0, 0, "ERROR: Can't find %s!", path.c_str());
+        refresh();
         return;
     }
 
     std::string line;
     while (std::getline(file, line)) {
-        std::cout << line << "\n";
+        printw("%s\n", line.c_str());
     }
 
-    file.close();
+    refresh();
 }
 
 void setupAndUtility::vectorCreation(size_t amountOfChoices)
@@ -39,9 +41,9 @@ char  setupAndUtility::correctInput()
     bool succesfulInput = false;
     do
     {
-        char input;
-        std::cin >> input;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        char input = getch();
+        refresh();
+
         char inputUpper = std::toupper(input);
 
         for (int i = 0; i < gm.charPossibilities.size(); i++)
@@ -50,14 +52,17 @@ char  setupAndUtility::correctInput()
             {
                 if (i == gm.charPossibilities.size() - 1)
                 {
-                    std::cout << RED << "Please enter an available value.\n" << RESET;
+                    attron(COLOR_PAIR(1));
+                    printw("Please enter an available value.\n");
+                    attroff(COLOR_PAIR(1));
                     succesfulInput = false;
                 }
             }
             else
             {
                 succesfulInput = true;
-                EMPTYSCREEN();
+                clear();
+                refresh();
                 return inputUpper;
             }
         }
@@ -71,7 +76,8 @@ void setupAndUtility::yesOrNoFunction()
 
     for (int i = 0; i < yesOrNo.size(); i++)
     {
-        std::cout << gm.charPossibilities[i] << ". " << yesOrNo[i] << "\n";
+        printw("%c. %s \n", gm.charPossibilities[i], yesOrNo[i].c_str());
+        refresh();
     }
 }
 

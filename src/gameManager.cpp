@@ -21,7 +21,7 @@ void gameManager::startGame()
 
     gameData.setClass();
 
-    std::cout << "You are a traveller from another world...\n" << "Your only purpose is to survive...\n" << "Good luck.\n";
+    printw("You are a traveller from another world...\n Your only purpose is to survive...\n Good luck.\n");
 
     mainGameLoop mainLoop(*this);
     while (playerCurrentHP > 0)

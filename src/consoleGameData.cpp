@@ -110,10 +110,11 @@ void gameDataCreation::loadLocations()
     util.vectorCreation(amountOfLocations);
 
     for (const auto& c : gm.locations) {
-        std::cout << "Succesfully loaded locations: " << c.name << "\n";
+        printw("Succesfully loaded locations: %s\n",c.name.c_str());
         wait(20);
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::loadAbilities()
@@ -136,7 +137,7 @@ void gameDataCreation::loadAbilities()
 
     for (const auto& c : gm.abilities) {
         printw("Succesfully loaded abilities: %s\n", c.name.c_str());
-        wait(20);
+        wait(40);
         refresh();
     }
     for (auto& ab : gm.abilities) {
@@ -159,10 +160,12 @@ void gameDataCreation::loadItems()
     items = j.get<std::vector<item>>();
 
     for (const auto& c : items) {
-        std::cout << "Succesfully loaded items: " << c.name << " (bonus type: " << c.bonus << ")" << "\n";
+        printw("Succesfully loaded items : %s (bonus type : %i) \n", c.name.c_str(), c.bonus.c_str());
         wait(40);
+        refresh();
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::loadQuests()
@@ -178,10 +181,12 @@ void gameDataCreation::loadQuests()
     quests = j.get<std::vector<quest>>();
 
     for (const auto& c : quests) {
-        std::cout << "Succesfully loaded quests: " << c.name << " (quest type: " << c.type << ")" << "\n";
+        printw("Succesfully loaded quests: %s (quest type: %s) \n", c.name.c_str(), c.type.c_str());
         wait(40);
+        refresh();
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 
     for (auto& ab : quests) {
         questAssigner[ab.name] = &ab;
@@ -193,7 +198,8 @@ void gameDataCreation::setseed()
 {
     setupAndUtility util(gm);
 
-    std::cout << "custom seed?\n";
+    printw("custom seed?\n");
+    refresh();
 
     util.yesOrNoFunction();
 
@@ -201,8 +207,11 @@ void gameDataCreation::setseed()
 
     if (util.correctInput() == 'A')
     {
-        std::cout << "Enter seed (8 numbers)\n";
-        std::cin >> gm.seedValue;
+        printw("Enter seed (8 numbers)\n");
+        refresh();
+        echo();
+        scanw("%d", &gm.seedValue);
+        noecho();
     }
     else {
         std::random_device dev;
@@ -211,13 +220,16 @@ void gameDataCreation::setseed()
 
         gm.seedValue = dist6(rng);
     }
-    std::cout << "Seed:" << std::setfill('0') << std::setw(8) << gm.seedValue << "\n";
+    printw("Seed:%08d\n", gm.seedValue);
+    refresh();
+
     if(gm.seedValue==11111111)
     {
         playerCurrentGold = 100000;
     }
     seedStart = gm.seedValue;
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::setClass()
@@ -225,22 +237,30 @@ void gameDataCreation::setClass()
     setupAndUtility util(gm);
 
     util.vectorCreation(gm.characters.size());
-    std::cout << "Choose a character:\n";
+    printw("Choose a character:\n");
 
     for (int i = 0; i < gm.charPossibilities.size(); i++)
     {
-        std::cout << gm.charPossibilities[i]
-            << ". "
-            << gm.characters[i].name << RED << " [ max HP: "
-            << gm.characters[i].hpMax << BLUE << " | ATK: "
-            << gm.characters[i].attack << RESET << "]\n";;
+        printw("%c. %s", gm.charPossibilities[i], gm.characters[i].name.c_str());
+
+        attron(COLOR_PAIR(1));
+        printw(" [ max HP: %d", gm.characters[i].hpMax);
+        attroff(COLOR_PAIR(1));
+
+        attron(COLOR_PAIR(2));
+        printw(" | ATK: %d", gm.characters[i].attack);
+
+        printw("]\n");
+        attroff(COLOR_PAIR(2));
     }
+    refresh();
 
     char playerChoice = util.correctInput();
 
     int characterChoiceInt = static_cast<int>(playerChoice) - 'A';
 
-    std::cout << "You chose: " << gm.characters[characterChoiceInt].name << "\n";
+printw:("You chose: %s \n", gm.characters[characterChoiceInt].name.c_str());
+    refresh();
 
     player = gm.characters[characterChoiceInt];
 

@@ -10,24 +10,28 @@ std::vector<enemy*> availableEnemies;
 
     void combat::basicCombat()
     {
-        std::cout << "You see an enemy. Naturally you want to kill it. \n";
+        printw("You see an enemy. Naturally you want to kill it. \n");
+        refresh();
         selectEnemy();
         int turnCounter = 0;
         while (true)
         {
             turnCounter++;
-            std::cout << "turn: " << turnCounter << "\n";
+            printw("turn: %i \n", turnCounter);
+            refresh();
             combatTurn();
             if (playerCurrentHP <= 0 || currentCombatEnemyCurrentHP <= 0)
             {
                 if (playerCurrentHP >= 1)
                 {
-                    std::cout << "You have succesfully defeated the enemy!\n";
+                    printw("You have succesfully defeated the enemy!\n");
+                    refresh();
                 }
                 else 
                 {
-                    std::cout << "You have been defeated by: " << currentCombatEnemy.name << "!\n";
-                    std::cout << "You lose!" << "\n";
+                    printw("You have been defeated by: %s! \n", currentCombatEnemy.name.c_str());
+                    printw("You lose! \n");
+                    refresh();
                     exit(0);
                 }
                 break;
@@ -41,7 +45,8 @@ std::vector<enemy*> availableEnemies;
         availableEnemies = createEnemySample();
 
         if (availableEnemies.empty()) {
-            std::cout << "Error: No enemies found in region: " << currentRegion << "!\n";
+            printw("Error: No enemies found in region: %s !\n", currentRegion.c_str());
+            refresh();
             return;
         }
 
@@ -49,7 +54,8 @@ std::vector<enemy*> availableEnemies;
         currentCombatEnemy = *availableEnemies[randomEnemy];
 
         currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
-        std::cout << "your current enemy is: " << availableEnemies[randomEnemy]->name << "." << "\n";
+        printw("your current enemy is: %s. \n", availableEnemies[randomEnemy]->name.c_str());
+        refresh();
     }
 
     void combat::combatTurn()
@@ -60,29 +66,33 @@ std::vector<enemy*> availableEnemies;
         if (currentCombatEnemyCurrentHP <= 0)
         {
             currentCombatEnemyCurrentHP = 0;
-            std::cout << "The enemy is dead!\n";
+            printw("The enemy is dead!\n");
 
-            std::cout << "You received " << currentCombatEnemy.goldReward << " gold!" << "\n";
+            printw("You received %i gold! \n", currentCombatEnemy.goldReward);
             playerCurrentGold = playerCurrentGold + currentCombatEnemy.goldReward;
-            std::cout << "You now have " << playerCurrentGold << " gold!" << "\n";
+            printw("You now have %i gold! \n", playerCurrentGold);
+            refresh();
             return;
         }
 
-        std::cout << "The enemy has " << currentCombatEnemyCurrentHP << " HP left.\n";
+        printw("The enemy has %i HP left.\n", currentCombatEnemyCurrentHP);
         if (playerBlocking == true)
         {
-            std::cout << "The " << currentCombatEnemy.name << " attacks you for " << currentCombatEnemy.attack / 2 << " damage.\n";
+            printw("The %s attacks you for %i damage.\n", currentCombatEnemy.name.c_str(), currentCombatEnemy.attack / 2);
+            refresh();
 
             playerCurrentHP -= currentCombatEnemy.attack / 2;
         }
         else 
         {
-            std::cout << "The " << currentCombatEnemy.name << " attacks you for " << currentCombatEnemy.attack << " damage.\n";
+            printw("The %s attacks you for %i damage.\n", currentCombatEnemy.name.c_str(), currentCombatEnemy.attack);
+            refresh();
 
             playerCurrentHP -= currentCombatEnemy.attack;
         }
 
-        std::cout << "you have " << playerCurrentHP << " HP left.\n";
+        printw("you have %i HP left.\n", playerCurrentHP);
+        refresh();
         endTurnEffects();
     }
 
@@ -102,35 +112,40 @@ std::vector<enemy*> availableEnemies;
 
         util.vectorCreation(playerCombatOptions.size());
 
-        std::cout << "It is your turn, choose your action:\n";
+        printw("It is your turn, choose your action:\n");
+        refresh();
         for (int i = 0; i < playerCombatOptions.size(); i++)
         {
-            std::cout << gm.charPossibilities[i] << ". " << playerCombatOptions[i] << "\n";
+            printw("%c. %s \n", gm.charPossibilities[i], playerCombatOptions[i].c_str());
+            refresh();
         }
 
         switch (util.correctInput())
         {
         case 'A':
-            std::cout << "You attack the enemy for " << player.attack << " damage.\n";
+            printw("You attack the enemy for %i damage.\n", player.attack);
+            refresh();
             currentCombatEnemyCurrentHP -= player.attack;
             playerAction = 'A';
             break;
 
         case 'B':
-            std::cout << "You brace yourself...\n";
+            printw("You brace yourself...\n");
+            refresh();
             playerBlocking = true;
             playerAction = 'B';
             break;
 
         case 'C':
             playerAction = 'C';
-            std::cout << "What ability do you want to use?" << "\n";
+            printw("What ability do you want to use? \n");
 
             util.vectorCreation(gm.equippedAbilities.size());
 
             for (int i = 0; i < gm.equippedAbilities.size(); i++)
             {
-                std::cout << gm.charPossibilities[i] << ". " << gm.equippedAbilities[i].name << "\n";
+                printw("%c. %s \n", gm.charPossibilities[i], gm.equippedAbilities[i].name.c_str());
+                refresh();
             }
             chosenAbility = util.correctInput() - 'A';
 
@@ -141,18 +156,19 @@ std::vector<enemy*> availableEnemies;
             }
             else
             {
-                std::cout << "You fucked up something, didn't you?" << "\n";
+                printw("You fucked up something, didn't you? \n");
+                refresh();
             }
 
             gm.currentAbilitySpecialAmount = gm.equippedAbilities[chosenAbility].specialAmount;
-            //std::cout << gm.equippedAbilities[chosenAbility].specialAmount << " whatevs" << "\n";
             if (abilityAttributeAssigner.contains(gm.equippedAbilities[chosenAbility].special))
             {
                 abilityAttributeAssigner[gm.equippedAbilities[chosenAbility].special]();
             }
             else
             {
-                std::cout << "You fucked up something, didn't you?" << "\n";
+                printw("You fucked up something, didn't you? \n");
+                refresh();
             }
             break;
         }
@@ -198,28 +214,38 @@ std::vector<enemy*> availableEnemies;
 
     void combat::abilityDamage(int damageOfAbility)
     {
-        std::cout << "You casted: " << gm.equippedAbilities[chosenAbility].name << "!" << "\n";
-        std::cout << "the enemy took " << RED << gm.equippedAbilities[chosenAbility].amount << RESET << " damage!" << "\n";
+        printw("You casted: %s! \n", gm.equippedAbilities[chosenAbility].name.c_str());
+        printw("the enemy took ");
+
+        attron(COLOR_PAIR(1));
+        printw("%i", gm.equippedAbilities[chosenAbility].amount);
+        attroff(COLOR_PAIR(1));
+
+        printw(" damage!\n");
+        refresh();
         currentCombatEnemyCurrentHP -= gm.equippedAbilities[chosenAbility].amount;
     }
 
     void combat::abilityDoT(int duration)
     {
         burnTimer = duration;
-        //std::cout << "DEBUG: burnTimer 1:" << burnTimer << "\n";
     }
 
     void combat::abilitySoulScream(int soulScreamAmount)
     {
-        std::cout << "The enemy screams in agony, as you retrieve their soul from their body..." << "\n";
+        printw("The enemy screams in agony, as you retrieve their soul from their body... \n");
+        refresh();
+        wait(100);
         gm.soulCounter++;
-        std::cout << "You now have " << gm.soulCounter << " soul"; 
+        printw("You now have %f soul", gm.soulCounter);
         if (gm.soulCounter != 1)
         {
-            std::cout << "s";
+            printw("s");
         }
-        std::cout << "." << "\n";
-        std::cout << "The enemy has a dead look in his eyes, and seems less affected by his wounds..." << "\n";
+        printw(". \n");
+        wait(20);
+        printw("The enemy has a dead look in his eyes, and seems less affected by his wounds... \n");
+        refresh();
         currentCombatEnemyCurrentHP = currentCombatEnemyCurrentHP + soulScreamAmount;
     }
 
@@ -229,7 +255,14 @@ std::vector<enemy*> availableEnemies;
         {
             currentCombatEnemyCurrentHP--;
             burnTimer--;
-            std::cout << "The enemy " << gm.equippedAbilities[chosenAbility].special <<"s! he takes: " << RED << "1" << RESET << " damage!" << "\n";
-            std::cout << "The enemy has: " << currentCombatEnemyCurrentHP << " HP left!" << "\n";
+            printw("The enemy %ss! he takes: ", gm.equippedAbilities[chosenAbility].special.c_str()); //i have my questions, but lets keep it this way until it becomes a problem
+
+            attron(COLOR_PAIR(1));
+            printw("1");
+            attroff(COLOR_PAIR(1));
+
+            printw(" damage!\n");
+            printw("The enemy has: %i HP left! \n", currentCombatEnemyCurrentHP);
+            refresh();
         }
     }
