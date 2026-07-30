@@ -3,7 +3,10 @@
 #define consoleGame_HPP
 
 #include <iostream>
+
 #include <nlohmann/json.hpp>
+#include <curses.h>
+
 #include <fstream>
 #include <array>
 #include <vector>

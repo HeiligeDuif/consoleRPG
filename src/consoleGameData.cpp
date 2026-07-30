@@ -36,7 +36,8 @@ void gameDataCreation::gameDataGenerator()
     util.addToDataBase<location>(gm.locations);
     util.addToDataBase<item>(items);
 
-    std::cout << "succesfully loaded " << gamedataBase.size() << " items to database." << "\n";
+    printw("succesfully loaded %zu items to database. \n", gamedataBase.size());
+    refresh();
 }
 
 void gameDataCreation::loadEnemies()
@@ -52,10 +53,12 @@ void gameDataCreation::loadEnemies()
     gm.enemies = j.get<std::vector<enemy>>();
 
     for (const auto& c : gm.enemies) {
-        std::cout << "Succesfully loaded enemies: " << c.name << " (max HP: " << c.hpMax << ")" << "\n";
+        printw("Succesfully loaded enemies: %s (max HP: %d) \n",c.name.c_str(), c.hpMax);
+        refresh();
         wait(20);
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::loadCharacters()
@@ -77,10 +80,15 @@ void gameDataCreation::loadCharacters()
     util.vectorCreation(amountOfCharacters);
 
     for (const auto& c : gm.characters) {
-        std::cout << "Succesfully loaded characters: " << c.name << " (max HP: " << c.hpMax << ")" << "\n";
+        printw("Succesfully loaded characters: %s", c.name.c_str());
+        attron(COLOR_PAIR(1));
+        printw("(max HP : % d) \n", c.hpMax);
+        attroff(COLOR_PAIR(1));
         wait(20);
+        refresh();
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::loadLocations()
@@ -127,13 +135,15 @@ void gameDataCreation::loadAbilities()
     util.vectorCreation(amountOfAbilities);
 
     for (const auto& c : gm.abilities) {
-        std::cout << "Succesfully loaded abilities: " << c.name << "\n";
+        printw("Succesfully loaded abilities: %s\n", c.name.c_str());
         wait(20);
+        refresh();
     }
     for (auto& ab : gm.abilities) {
         abilityAssigner[ab.name] = &ab;
     }
-    EMPTYSCREEN();
+    clear();
+    refresh();
 }
 
 void gameDataCreation::loadItems()

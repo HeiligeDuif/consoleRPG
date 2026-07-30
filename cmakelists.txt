@@ -3,6 +3,33 @@ project(consoleGame)
 
 include(FetchContent)
 
+set(PDCURSES_ZIP "${CMAKE_BINARY_DIR}/pdcurses.zip")
+set(PDCURSES_SRC_DIR "${CMAKE_BINARY_DIR}/PDCursesMod-master")
+
+if(NOT EXISTS "${PDCURSES_SRC_DIR}")
+    message(STATUS "Downloading PDCursesMod source...")
+    file(DOWNLOAD
+        "https://github.com/Bill-Gray/PDCursesMod/archive/refs/heads/master.zip"
+        "${PDCURSES_ZIP}"
+        STATUS download_status
+    )
+    list(GET download_status 0 status_code)
+    if(NOT status_code EQUAL 0)
+        message(FATAL_ERROR "Failed to download PDCursesMod source code.")
+    endif()
+
+    message(STATUS "Extracting PDCursesMod...")
+    file(ARCHIVE_EXTRACT
+        INPUT "${PDCURSES_ZIP}"
+        DESTINATION "${CMAKE_BINARY_DIR}"
+    )
+endif()
+
+file(GLOB PDCURSES_SOURCES 
+    "${PDCURSES_SRC_DIR}/pdcurses/*.c"
+    "${PDCURSES_SRC_DIR}/wincon/*.c"
+)
+
 FetchContent_Declare(
   nlohmann_json
   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
@@ -28,11 +55,16 @@ src/consoleGameData.cpp
 src/mainLoop.cpp
 src/setupAndUtility.cpp
 src/gameManager.cpp
- "src/gameManager.cpp")
+${PDCURSES_SOURCES})
 
 # Include mappen toevoegen
 target_include_directories(consoleGame PUBLIC include)
-target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json)
+target_include_directories(consoleGame PRIVATE 
+    "${PDCURSES_SRC_DIR}"
+    "${PDCURSES_SRC_DIR}/pdcurses"
+    "${PDCURSES_SRC_DIR}/wincon"
+)
+target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json winmm)
 set_target_properties(consoleGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 set(JSON_FILES JSON/abilities.json JSON/characters.json JSON/enemies.json JSON/items.json JSON/quests.json JSON/locations.json)

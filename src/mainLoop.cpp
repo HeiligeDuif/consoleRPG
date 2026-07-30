@@ -55,8 +55,8 @@ void mainGameLoop::splitOptions(int chosenRoad)
         {
             std::cout << "No action found [error]";
         }
-    } while (leaving != true);
-    leaving = false;
+    } while (gm.leaving != true);
+    gm.leaving = false;
 }
 
 void mainGameLoop::locationSampler()
