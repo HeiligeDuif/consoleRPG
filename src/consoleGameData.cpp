@@ -17,6 +17,7 @@ std::map<std::string, std::function<void()>> locationActions;
 std::map<std::string, int*> valueAndStatConnector;
 std::map < std::string, std::function<void()>> abilityAttributeAssigner;
 std::map<std::string, ability*> abilityAssigner;
+std::map<std::string, quest*> questAssigner;
 std::map<std::string, int*> factionAssigner;
 std::map<std::string, int*> regionAssigner;
 
@@ -171,6 +172,10 @@ void gameDataCreation::loadQuests()
         wait(40);
     }
     EMPTYSCREEN();
+
+    for (auto& ab : quests) {
+        questAssigner[ab.name] = &ab;
+    }
 }
 
 

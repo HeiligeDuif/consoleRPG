@@ -1,5 +1,4 @@
 #include "consoleGame.hpp"
-bool leaving = false;
 
 void activities::shopEntry()
 {
@@ -63,7 +62,7 @@ void activities::canPlayerBuy(int shopChoice)
 
 void activities::leaveFunction()
 {
-    leaving = true;
+    gm.leaving = true;
 }
 
 void activities::getQuest()

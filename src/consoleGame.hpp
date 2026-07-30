@@ -123,6 +123,8 @@ struct item :public structSearcher
     std::string bonus;
     int value;
     int price;
+    bool rebuyable;
+    std::optional<bool> bought;
 
     bool matches(const std::string& searchItem) const override {
         return name == searchItem;
@@ -132,6 +134,7 @@ struct item :public structSearcher
 struct quest
 {
     std::string name;
+    std::string description;
     std::string type;
     int targetAmount;
     bool completed;
@@ -139,7 +142,15 @@ struct quest
     int rewardAmount;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(enemy, name, hpMax, attack, goldReward, difficultyIndicator, faction, region)
+inline void from_json(const nlohmann::json& j, enemy& c) {
+    c.name = j.at("name").get<std::string>();
+    c.hpMax = j.at("hpMax").get<int>();
+    c.attack = j.at("attack").get<int>();
+    c.goldReward = j.at("goldReward").get<int>();
+    c.difficultyIndicator = j.at("difficultyIndicator").get<int>();
+    c.faction = j.at("faction").get<std::string>();
+    c.region = j.at("region").get<std::string>();
+}
 //JSON custom loader
 inline void from_json(const nlohmann::json& j, character& c) {
     c.name = j.at("name").get<std::string>();
@@ -156,8 +167,21 @@ inline void from_json(const nlohmann::json& j, character& c) {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(action, nameOfAction, resultOfAction)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location, name, description, possibleActions, rarity, proximity, beenHere)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ability, name, effect, amount, special, specialAmount)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(item, name, bonus, value, price)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(quest, name, type, targetAmount, completed, rewardType, rewardAmount)
+inline void from_json(const nlohmann::json& j, item& c) {
+    c.name = j.at("name").get<std::string>();
+    c.bonus = j.at("bonus").get<std::string>();
+    c.value = j.at("value").get<int>();
+    c.price = j.at("price").get<int>();
+    c.rebuyable = j.at("rebuyable").get<bool>();
+
+    if (j.contains("bought") && !j["bought"].is_null()) {
+        c.bought = j.at("bought").get<bool>();
+    }
+    else {
+        c.bought = std::nullopt;
+    }
+}
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(quest, name, description, type, targetAmount, completed, rewardType, rewardAmount)
 
 extern std::map<std::string, std::function<void()>> locationActions;
 extern std::vector<item> items;
@@ -186,9 +210,7 @@ extern std::map<std::string, std::function<void()>> abilityAttributeAssigner;
 //extern std::map<std::string, int*> regionAssigner;
 
 extern std::string currentRegion;
-extern std::vector<enemy*> availableEnemies;
-
-extern bool leaving;
+extern std::vector<enemy*> availableEnemies; 
 
 class gameManager
 {
@@ -210,6 +232,8 @@ public:
     ability newAbility;
 
     float soulCounter = 0;
+
+    bool leaving = false;
 private:
 
 };

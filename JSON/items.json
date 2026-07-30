@@ -3,12 +3,23 @@
     "name": "sword",
     "bonus": "attack",
     "value": 1,
-    "price": 2
+    "price": 3,
+    "rebuyable": false,
+    "bought":  false
   },
   {
     "name": "armour",
-    "bonus": "hp",
+    "bonus": "hpMax",
     "value": 1,
-    "price": 1
+    "price": 5,
+    "rebuyable": false,
+    "bought": false
+  },
+  {
+    "name": "apple",
+    "bonus": "hp",
+    "value": 3,
+    "price": 1,
+    "rebuyable": true
   }
 ]
