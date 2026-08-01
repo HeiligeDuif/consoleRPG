@@ -32,7 +32,7 @@ void mainGameLoop::splitOptions(int chosenRoad)
 {
     do
     {
-        currentRegion = gm.locations[chosenRoad].name;
+        gm.currentRegion = gm.locations[chosenRoad].name;
 
         if (gm.locations[chosenRoad].beenHere == false)
         {

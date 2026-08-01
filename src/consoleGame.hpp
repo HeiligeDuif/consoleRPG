@@ -186,8 +186,6 @@ extern std::vector<item> items;
 
 extern std::vector<quest> quests;
 
-extern enemy currentCombatEnemy;
-
 extern character player;
 
 extern int playerCurrentHP;
@@ -207,8 +205,7 @@ extern std::map<std::string, std::function<void()>> abilityAttributeAssigner;
 //extern std::map<std::string, int*> factionAssigner;
 //extern std::map<std::string, int*> regionAssigner;
 
-extern std::string currentRegion;
-extern std::vector<enemy*> availableEnemies; 
+
 
 class gameManager
 {
@@ -229,6 +226,10 @@ public:
     int currentAbilitySpecialAmount;
     ability newAbility;
 
+    std::string currentRegion;
+    std::vector<enemy*> availableEnemies;
+    enemy currentCombatEnemy;
+
     float soulCounter = 0;
 
     bool leaving = false;
@@ -248,7 +249,6 @@ public:
     int seedIteration(int divisionAmount);
     void unlockAbility(ability ewAbility);
     void setConsoleOutputUTF8();
-    int handleMenuClickOrKey(int totalOptions);
 
     template <typename T, typename storage>
     void addToDataBase(storage& source)
@@ -343,7 +343,7 @@ public:
     activities(gameManager& manager) : gm(manager) {}
 
     void shopEntry();
-    void canPlayerBuy(int shopChoice);
+    void canPlayerBuy(int shopChoice, const std::vector<item*>& buyableItems);
     void leaveFunction();
     void getQuest();
 private:

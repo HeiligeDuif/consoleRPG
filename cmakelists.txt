@@ -3,73 +3,79 @@ project(consoleGame)
 
 include(FetchContent)
 
-set(PDCURSES_ZIP "${CMAKE_BINARY_DIR}/pdcurses.zip")
-set(PDCURSES_SRC_DIR "${CMAKE_BINARY_DIR}/PDCursesMod-master")
+# 1. Configure PDCursesMod variables BEFORE fetching
+# Build statically to avoid .dll / .lib linkage issues in MSVC
+set(PDC_BUILD_SHARED OFF CACHE BOOL "Build static library" FORCE) 
+set(PDC_SDL2_BUILD OFF CACHE BOOL "Build SDL2 backend" FORCE)
+set(PDC_GL_BUILD OFF CACHE BOOL "Build GL backend" FORCE)
+set(PDC_WIDE ON CACHE BOOL "Enable wide characters" FORCE)
+set(PDC_UTF8 ON CACHE BOOL "Enable UTF-8 support" FORCE)
 
-if(NOT EXISTS "${PDCURSES_SRC_DIR}")
-    message(STATUS "Downloading PDCursesMod source...")
-    file(DOWNLOAD
-        "https://github.com/Bill-Gray/PDCursesMod/archive/refs/heads/master.zip"
-        "${PDCURSES_ZIP}"
-        STATUS download_status
-    )
-    list(GET download_status 0 status_code)
-    if(NOT status_code EQUAL 0)
-        message(FATAL_ERROR "Failed to download PDCursesMod source code.")
-    endif()
+# Prevent dependencies from trying to install to C:\Program Files
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install_dir" CACHE STRING "Local install prefix" FORCE)
 
-    message(STATUS "Extracting PDCursesMod...")
-    file(ARCHIVE_EXTRACT
-        INPUT "${PDCURSES_ZIP}"
-        DESTINATION "${CMAKE_BINARY_DIR}"
-    )
-endif()
-
-file(GLOB PDCURSES_SOURCES 
-    "${PDCURSES_SRC_DIR}/pdcurses/*.c"
-    "${PDCURSES_SRC_DIR}/wincon/*.c"
+# 2. Let FetchContent handle the downloading and subdirectory mapping safely
+FetchContent_Declare(
+    PDCursesMod
+    URL https://github.com/Bill-Gray/PDCursesMod/archive/refs/heads/master.zip
 )
+FetchContent_Populate(PDCursesMod)
 
+file(GLOB PDC_CORE_SRC   "${pdcursesmod_SOURCE_DIR}/pdcurses/*.c")
+file(GLOB PDC_WINCON_SRC "${pdcursesmod_SOURCE_DIR}/wincon/*.c")
+
+add_library(pdcurses STATIC ${PDC_CORE_SRC} ${PDC_WINCON_SRC})
+
+# 3. Fetch nlohmann_json
 FetchContent_Declare(
   nlohmann_json
   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
-
 FetchContent_MakeAvailable(nlohmann_json)
 
-# C++ standaard instellen
+# 4. C++ standaard instellen
 if(MSVC)
     add_compile_options(/std:c++latest)
 else()
-    set(CMAKE_CXX_STANDARD 26)
+    set(CMAKE_CXX_STANDARD 26 CACHE STRING "C++ standard")
 endif()
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "Require C++ standard" FORCE)
 
-# Verzamel alle .cpp bestanden in de src map
+# 5. Verzamel alle .cpp bestanden
 add_executable(consoleGame
-src/activities.cpp
-src/combat.cpp
-src/consoleGame.cpp
-src/consoleGameData.cpp
-src/mainLoop.cpp
-src/setupAndUtility.cpp
-src/gameManager.cpp
-${PDCURSES_SOURCES})
-
-# Include mappen toevoegen
-target_include_directories(consoleGame PUBLIC include)
-target_include_directories(consoleGame PRIVATE 
-    "${PDCURSES_SRC_DIR}"
-    "${PDCURSES_SRC_DIR}/pdcurses"
-    "${PDCURSES_SRC_DIR}/wincon"
+    src/activities.cpp
+    src/combat.cpp
+    src/consoleGame.cpp
+    src/consoleGameData.cpp
+    src/mainLoop.cpp
+    src/setupAndUtility.cpp
+    src/gameManager.cpp
 )
-target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json winmm)
+
+# 6. Include mappen toevoegen
+target_include_directories(consoleGame PUBLIC include)
+# FetchContent populates pdcursesmod_SOURCE_DIR automatically
+target_include_directories(pdcurses PUBLIC "${pdcursesmod_SOURCE_DIR}")
+target_compile_definitions(pdcurses PUBLIC PDC_WIDE PDC_FORCE_UTF8)
+target_link_libraries(pdcurses PUBLIC winmm)
+
+# 7. Link libraries (pdcurses is now correctly recognized as a static target)
+target_link_libraries(consoleGame PRIVATE nlohmann_json::nlohmann_json winmm pdcurses)
+
 set_target_properties(consoleGame PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-set(JSON_FILES JSON/abilities.json JSON/characters.json JSON/enemies.json JSON/items.json JSON/quests.json JSON/locations.json)
+# 8. Copy JSON files
+set(JSON_FILES 
+    JSON/abilities.json 
+    JSON/characters.json 
+    JSON/enemies.json 
+    JSON/items.json 
+    JSON/quests.json 
+    JSON/locations.json
+)
 
-foreach(json_file ${JSON_FILES})
+foreach(json_file IN LISTS JSON_FILES)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${json_file}" 
                    "${CMAKE_CURRENT_BINARY_DIR}/${json_file}" COPYONLY)
 endforeach()

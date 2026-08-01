@@ -54,7 +54,11 @@ char  setupAndUtility::correctInput(int menuStartY)
             int row = event.y - menuStartY;
 
             if (row >= 0 && row < gm.charPossibilities.size())
+            {
+                clear();
+                refresh();
                 return gm.charPossibilities[row];
+            }
         }
 
         char inputUpper = std::toupper(static_cast<unsigned char>(input));
@@ -68,8 +72,6 @@ char  setupAndUtility::correctInput(int menuStartY)
                     attron(COLOR_PAIR(1));
                     printw("Please enter an available value.\n");
                     attroff(COLOR_PAIR(1));
-                    clear();
-                    refresh();
                     succesfulInput = false;
                 }
             }

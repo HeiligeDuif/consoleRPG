@@ -3,17 +3,24 @@
 void activities::shopEntry()
 {
     setupAndUtility util(gm);
+
+    std::vector<item*> buyableItems = util.filterGameData<item>(gamedataBase, [](const item* currentItem)
+        {
+            return !currentItem->bought.value_or(false);
+        });
+
     printw("Welcome to the shop!\n");
     printw("We have these items for sale:\n");
+    printw("You have: %i gold. \n", playerCurrentGold);
     refresh();
-    util.vectorCreation(items.size());
+    util.vectorCreation(buyableItems.size());
 
-    for (int i = 0; i < items.size(); i++)
+    for (int i = 0; i < buyableItems.size(); i++)
     {
         printw("%s, gives %d %s.\n",
-            items[i].name.c_str(),
-            items[i].value,
-            items[i].bonus.c_str());
+            buyableItems[i]->name.c_str(),
+            buyableItems[i]->value,
+            buyableItems[i]->bonus.c_str());
         refresh();
     }
 
@@ -28,35 +35,35 @@ void activities::shopEntry()
     {
         printw("Which item? \n");
         refresh();
-        int shopOptions = items.size();
+        int shopOptions = buyableItems.size()+1;
         util.vectorCreation(shopOptions); //reset after yesOrNo changed it
 
         int menuStartY, dummyX;
         getyx(stdscr, menuStartY, dummyX);
 
-        for (int i = 0; i < items.size(); i++)
+        for (int i = 0; i < buyableItems.size(); i++)
 
         {
             printw("%c. %s for %d gold.\n",
                 gm.charPossibilities[i],
-                items[i].name.c_str(),
-                items[i].price);
+                buyableItems[i]->name.c_str(),
+                buyableItems[i]->price);
             refresh();
         }
 
-        printw("%c. Nevermind \n", gm.charPossibilities[static_cast<int>(items.size())]);
+        printw("%c. Nevermind \n", gm.charPossibilities[static_cast<int>(buyableItems.size())]);
         refresh();
 
         int shopChoiceInt;
 
         char shopChoice = util.correctInput(menuStartY);
         shopChoiceInt = static_cast<int>(shopChoice-'A');
-        if (shopChoiceInt == items.size()) 
+        if (shopChoiceInt == buyableItems.size())
         {
             return;
         }
         else {
-            canPlayerBuy(shopChoiceInt);
+            canPlayerBuy(shopChoiceInt, buyableItems);
         }
     }
     else 
@@ -65,14 +72,14 @@ void activities::shopEntry()
     }
 }
 
-void activities::canPlayerBuy(int shopChoice) 
+void activities::canPlayerBuy(int shopChoice, const std::vector<item*>& buyableItems)
 {
-    if (items[shopChoice].price < playerCurrentGold)
+    if (buyableItems[shopChoice]->price <= playerCurrentGold)
     {
-        playerCurrentGold = playerCurrentGold - items[shopChoice].price;
-        if (valueAndStatConnector.contains(items[shopChoice].bonus))
+        playerCurrentGold = playerCurrentGold - buyableItems[shopChoice]->price;
+        if (valueAndStatConnector.contains(buyableItems[shopChoice]->bonus))
         {
-            *valueAndStatConnector[items[shopChoice].bonus] = *valueAndStatConnector[items[shopChoice].bonus] + items[shopChoice].value;
+            *valueAndStatConnector[buyableItems[shopChoice]->bonus] = *valueAndStatConnector[buyableItems[shopChoice]->bonus] + buyableItems[shopChoice]->value;
             //pointer to specific player struct
         }
         else
@@ -83,9 +90,15 @@ void activities::canPlayerBuy(int shopChoice)
             refresh();
         }
         printw("You now have: %i gold. \n", playerCurrentGold);
+
+        if (buyableItems[shopChoice]->bought.has_value()) {
+            buyableItems[shopChoice]->bought = true;
+        }
+
         printw("You know have: %d %s.\n",
-            *valueAndStatConnector[items[shopChoice].bonus],
-            items[shopChoice].bonus.c_str());
+            *valueAndStatConnector[buyableItems[shopChoice]->bonus],
+            buyableItems[shopChoice]->bonus.c_str());
+        
         refresh();
     }
     else

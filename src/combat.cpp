@@ -1,12 +1,9 @@
 #include "consoleGame.hpp"
-enemy currentCombatEnemy;
 char playerAction;
 int chosenAbility;
 enemy currentActor;
 std::vector<structSearcher> currentTurnCharacter;
 int burnTimer = 0;
-
-std::vector<enemy*> availableEnemies;
 
     void combat::basicCombat()
     {
@@ -29,7 +26,7 @@ std::vector<enemy*> availableEnemies;
                 }
                 else 
                 {
-                    printw("You have been defeated by: %s! \n", currentCombatEnemy.name.c_str());
+                    printw("You have been defeated by: %s! \n", gm.currentCombatEnemy.name.c_str());
                     printw("You lose! \n");
                     refresh();
                     exit(0);
@@ -42,19 +39,19 @@ std::vector<enemy*> availableEnemies;
     void combat::selectEnemy()
     {
         setupAndUtility util(gm);
-        availableEnemies = createEnemySample();
+        gm.availableEnemies = createEnemySample();
 
-        if (availableEnemies.empty()) {
-            printw("Error: No enemies found in region: %s !\n", currentRegion.c_str());
+        if (gm.availableEnemies.empty()) {
+            printw("Error: No enemies found in region: %s !\n", gm.currentRegion.c_str());
             refresh();
             return;
         }
 
-        int randomEnemy = util.seedIteration(availableEnemies.size());
-        currentCombatEnemy = *availableEnemies[randomEnemy];
+        int randomEnemy = util.seedIteration(gm.availableEnemies.size());
+        gm.currentCombatEnemy = *gm.availableEnemies[randomEnemy];
 
-        currentCombatEnemyCurrentHP = currentCombatEnemy.hpMax;
-        printw("your current enemy is: %s. \n", availableEnemies[randomEnemy]->name.c_str());
+        currentCombatEnemyCurrentHP = gm.currentCombatEnemy.hpMax;
+        printw("your current enemy is: %s. \n", gm.availableEnemies[randomEnemy]->name.c_str());
         refresh();
     }
 
@@ -68,8 +65,8 @@ std::vector<enemy*> availableEnemies;
             currentCombatEnemyCurrentHP = 0;
             printw("The enemy is dead!\n");
 
-            printw("You received %i gold! \n", currentCombatEnemy.goldReward);
-            playerCurrentGold = playerCurrentGold + currentCombatEnemy.goldReward;
+            printw("You received %i gold! \n", gm.currentCombatEnemy.goldReward);
+            playerCurrentGold = playerCurrentGold + gm.currentCombatEnemy.goldReward;
             printw("You now have %i gold! \n", playerCurrentGold);
             refresh();
             return;
@@ -78,17 +75,17 @@ std::vector<enemy*> availableEnemies;
         printw("The enemy has %i HP left.\n", currentCombatEnemyCurrentHP);
         if (playerBlocking == true)
         {
-            printw("The %s attacks you for %i damage.\n", currentCombatEnemy.name.c_str(), currentCombatEnemy.attack / 2);
+            printw("The %s attacks you for %i damage.\n", gm.currentCombatEnemy.name.c_str(), gm.currentCombatEnemy.attack / 2);
             refresh();
 
-            playerCurrentHP -= currentCombatEnemy.attack / 2;
+            playerCurrentHP -= gm.currentCombatEnemy.attack / 2;
         }
         else 
         {
-            printw("The %s attacks you for %i damage.\n", currentCombatEnemy.name.c_str(), currentCombatEnemy.attack);
+            printw("The %s attacks you for %i damage.\n", gm.currentCombatEnemy.name.c_str(), gm.currentCombatEnemy.attack);
             refresh();
 
-            playerCurrentHP -= currentCombatEnemy.attack;
+            playerCurrentHP -= gm.currentCombatEnemy.attack;
         }
 
         printw("you have %i HP left.\n", playerCurrentHP);
@@ -211,9 +208,9 @@ std::vector<enemy*> availableEnemies;
     std::vector<enemy*> combat::createEnemySample()
     {
         setupAndUtility util(gm);
-        std::vector<enemy*> filteredEnemies = util.filterGameData<enemy>(gamedataBase, [](const enemy* e)
+        std::vector<enemy*> filteredEnemies = util.filterGameData<enemy>(gamedataBase, [this](const enemy* e)
             {
-                return e->region == currentRegion;
+                return e->region == gm.currentRegion;
             });
         return filteredEnemies;
     }

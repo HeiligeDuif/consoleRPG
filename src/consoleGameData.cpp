@@ -24,8 +24,6 @@ std::map<std::string, int*> regionAssigner;
 std::string region;
 std::string faction;
 
-std::string currentRegion;
-
 void gameDataCreation::gameDataGenerator()
 {
     setupAndUtility util(gm);
