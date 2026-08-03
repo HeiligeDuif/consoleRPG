@@ -17,8 +17,13 @@ int main()
     cbreak();
     if (has_colors()) {
         start_color();
-        init_pair(1, COLOR_RED, COLOR_BLACK);
-        init_pair(2, COLOR_BLUE, COLOR_BLACK);
+        int colorID = 0;
+        for (int i = 0; i < 16; ++i) {
+            for (int j = 0; j < 16; j++) {
+                init_pair(colorID + 1, i, j);
+                colorID++;
+            };   
+        }
     }
     else {
         printw("No color supported :(");

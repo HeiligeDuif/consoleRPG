@@ -26,6 +26,14 @@ file(GLOB PDC_WINCON_SRC "${pdcursesmod_SOURCE_DIR}/wincon/*.c")
 
 add_library(pdcurses STATIC ${PDC_CORE_SRC} ${PDC_WINCON_SRC})
 
+include(FetchContent)
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG        master
+)
+FetchContent_MakeAvailable(stb)
+
 # 3. Fetch nlohmann_json
 FetchContent_Declare(
   nlohmann_json
@@ -57,6 +65,7 @@ add_executable(consoleGame
 target_include_directories(consoleGame PUBLIC include)
 # FetchContent populates pdcursesmod_SOURCE_DIR automatically
 target_include_directories(pdcurses PUBLIC "${pdcursesmod_SOURCE_DIR}")
+target_include_directories(${PROJECT_NAME} PRIVATE ${stb_SOURCE_DIR})
 target_compile_definitions(pdcurses PUBLIC PDC_WIDE PDC_FORCE_UTF8)
 target_link_libraries(pdcurses PUBLIC winmm)
 

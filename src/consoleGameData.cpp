@@ -312,4 +312,3 @@ void gameDataCreation::unorderedMapMaker()
     };
     */
 }
-
