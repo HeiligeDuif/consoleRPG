@@ -1,4 +1,5 @@
 # Visual Studio & CMake build outputs
+/build-linux/
 /build/
 /out/
 .vs/
