@@ -1,11 +1,12 @@
 // functies.h
+#pragma once
+
 #ifndef consoleGame_HPP
 #define consoleGame_HPP
 #define PDC_NCMOUSE
 
 #include <iostream>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include <nlohmann/json.hpp>
