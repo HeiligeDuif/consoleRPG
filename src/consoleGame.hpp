@@ -276,7 +276,7 @@ public:
     setupAndUtility(gameManager& manager) : gm(manager) {}
 
     void vectorCreation(size_t);
-    char correctInput(int menuStartY);
+    char correctInput(int menuStartY, std::function<void()> onRender = nullptr);
     void printAscii(const std::string& fileName);
     void yesOrNoFunction();
     int seedIteration(int divisionAmount);
@@ -388,7 +388,8 @@ class drawing
 public:
     short getClosestColor(unsigned char r, unsigned char g, unsigned char b);
     void drawSprite(int startX, int startY, const sprite& sprite);
-    sprite loadPNG(const std::string& filePath);
+    sprite loadPNG(const std::string& filePath, int frameX, int frameY, int frameWidth, int frameHeight);
+    void clearArea(int startX, int startY, int width, int height);
 private:
 
 };

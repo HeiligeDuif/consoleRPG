@@ -79,9 +79,9 @@ void gameDataCreation::loadCharacters()
 
     for (const auto& c : gm.characters) {
         printw("Succesfully loaded characters: %s", c.name.c_str());
-        attron(COLOR_PAIR(17));
+        attron(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
         printw("(max HP : % d) \n", c.hpMax);
-        attroff(COLOR_PAIR(17));
+        attroff(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
         wait(20);
         refresh();
     }
@@ -205,31 +205,60 @@ void gameDataCreation::setseed()
     util.yesOrNoFunction();
 
     drawing spriteDraw;
-    sprite playerSprite = spriteDraw.loadPNG("graphics/knight.png");
-    if (playerSprite.width == 0 || playerSprite.height == 0) {
-        endwin();
-        std::cerr << "Kon 'assets/player.png' niet laden of afbeelding is leeg!" << std::endl;
-        return;
+
+    std::vector<sprite> walkAnimation;
+    for (int x = 0; x < 8; ++x) {
+        walkAnimation.push_back(
+            spriteDraw.loadPNG("graphics/knightFrames.png", x, 0, 16, 16)
+        );
     }
-    spriteDraw.drawSprite(10, 20, playerSprite);
-    spriteDraw.drawSprite(30, 20, playerSprite);
     refresh();
 
-    if (util.correctInput(menuStartY) == 'A')
-    {
-        printw("Enter seed (8 numbers)\n");
-        refresh();
-        echo();
-        scanw("%d", &gm.seedValue);
-        noecho();
-    }
-    else {
-        std::random_device dev;
-        std::mt19937 rng(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 99999999);
+    bool running = true;
+    int currentFrame = 0;
 
-        gm.seedValue = dist6(rng);
-    }
+    auto lastFrameTime = std::chrono::steady_clock::now();
+    const std::chrono::milliseconds frameDelay(500);
+    auto renderStep = [&]() {
+        // 1. Update animatie-frame
+        auto currentTime = std::chrono::steady_clock::now();
+        if (currentTime - lastFrameTime >= frameDelay) {
+            currentFrame = (currentFrame + 1) % walkAnimation.size();
+            lastFrameTime = currentTime;
+        }
+
+        // 2. Teken scherm
+        spriteDraw.clearArea(10, 10, 16, 16);
+        spriteDraw.drawSprite(10, 10, walkAnimation[currentFrame]);
+        refresh();
+        };
+
+        if (util.correctInput(menuStartY, renderStep) == 'A')
+        {
+            printw("Enter seed (8 numbers)\n");
+            refresh();
+            echo();
+            scanw("%d", &gm.seedValue);
+            noecho();
+        }
+        else {
+            std::random_device dev;
+            std::mt19937 rng(dev());
+            std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 99999999);
+
+            gm.seedValue = dist6(rng);
+        }
+
+        auto currentTime = std::chrono::steady_clock::now();
+        if (currentTime - lastFrameTime >= frameDelay) {
+            currentFrame = (currentFrame + 1) % walkAnimation.size();
+            lastFrameTime = currentTime;
+        }
+
+        spriteDraw.drawSprite(10, 10, walkAnimation[currentFrame]);
+        refresh();
+        napms(16);
+
     printw("Seed:%08d\n", gm.seedValue);
     refresh();
 
@@ -256,15 +285,15 @@ void gameDataCreation::setClass()
     {
         printw("%c. %s", gm.charPossibilities[i], gm.characters[i].name.c_str());
 
-        attron(COLOR_PAIR(1));
+        attron(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
         printw(" [ max HP: %d", gm.characters[i].hpMax);
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
 
-        attron(COLOR_PAIR(2));
+        attron(COLOR_PAIR((COLOR_BLUE * 16) + COLOR_BLACK + 1));
         printw(" | ATK: %d", gm.characters[i].attack);
 
         printw("]\n");
-        attroff(COLOR_PAIR(2));
+        attroff(COLOR_PAIR((COLOR_BLUE * 16) + COLOR_BLACK + 1));
     }
     refresh();
 

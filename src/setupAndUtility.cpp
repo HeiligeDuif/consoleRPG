@@ -36,13 +36,21 @@ void setupAndUtility::vectorCreation(size_t amountOfChoices)
     }
 }
 
-char  setupAndUtility::correctInput(int menuStartY)
+char  setupAndUtility::correctInput(int menuStartY, std::function<void()> onRender)
 {
     bool succesfulInput = false;
     while (true)
     {
+        if (onRender) {
+            onRender();
+        }
         move(5, 0);
         int input = getch();
+
+        if (input == ERR) {
+            continue;
+        }
+
         if (input == KEY_MOUSE)
         {
             MEVENT event;
@@ -56,6 +64,7 @@ char  setupAndUtility::correctInput(int menuStartY)
 
             if (row >= 0 && row < gm.charPossibilities.size())
             {
+                timeout(-1);
                 clear();
                 refresh();
                 return gm.charPossibilities[row];
@@ -80,6 +89,7 @@ char  setupAndUtility::correctInput(int menuStartY)
             else
             {
                 succesfulInput = true;
+                timeout(-1);
                 clear();
                 refresh();
                 return inputUpper;

@@ -21,13 +21,10 @@ short drawing::getClosestColor(unsigned char r, unsigned char g, unsigned char b
     return bestColor;
 }
 
-sprite drawing::loadPNG(const std::string& filePath) {
+sprite drawing::loadPNG(const std::string& filePath, int frameX, int frameY, int frameWidth, int frameHeight) {
     sprite sprite;
-    int imgWidth = 0;
-    int imgHeight = 0;
-    int channels = 0;
+    int imgWidth = 0, imgHeight = 0, channels = 0;
 
-    // Laad PNG als RGBA (4 kanalen)
     unsigned char* rawBytes = stbi_load(filePath.c_str(), &imgWidth, &imgHeight, &channels, 4);
 
     if (!rawBytes) {
@@ -36,19 +33,34 @@ sprite drawing::loadPNG(const std::string& filePath) {
         return sprite;
     }
 
-    sprite.width = imgWidth;
-    sprite.height = imgHeight;
+    // Als er geen specifieke frame-grootte is meegegeven, pakken we de hele afbeelding!
+    int targetWidth = (frameWidth > 0) ? frameWidth : imgWidth;
+    int targetHeight = (frameHeight > 0) ? frameHeight : imgHeight;
 
-    // We halveren de hoogte van onze vector omdat 2 verticale pixels samen 1 cel vormen
-    int gridHeight = (imgHeight + 1) / 2;
-    sprite.pixels.resize(gridHeight, std::vector<colorPixel>(imgWidth));
+    sprite.width = targetWidth;
+    sprite.height = targetHeight;
 
-    for (int y = 0; y < imgHeight; y += 2) {
+    int gridHeight = (targetHeight + 1) / 2;
+    sprite.pixels.resize(gridHeight, std::vector<colorPixel>(targetWidth));
+
+    // Bepaal de start-offset in pixels
+    int startPixelX = frameX * targetWidth;
+    int startPixelY = frameY * targetHeight;
+
+    for (int y = 0; y < targetHeight; y += 2) {
         int cellY = y / 2;
+        int currentY = startPixelY + y;
 
-        for (int x = 0; x < imgWidth; ++x) {
+        for (int x = 0; x < targetWidth; ++x) {
+            int currentX = startPixelX + x;
+
+            // Safety check: blijf binnen het geheugen van de geladen afbeelding
+            if (currentX >= imgWidth || currentY >= imgHeight) {
+                continue;
+            }
+
             // 1. Bovenste pixel
-            int topIndex = (y * imgWidth + x) * 4;
+            int topIndex = (currentY * imgWidth + currentX) * 4;
             bool topAlpha = rawBytes[topIndex + 3] < 128;
             short topFg = topAlpha ? -1 : getClosestColor(rawBytes[topIndex], rawBytes[topIndex + 1], rawBytes[topIndex + 2]);
 
@@ -56,8 +68,8 @@ sprite drawing::loadPNG(const std::string& filePath) {
             bool bottomAlpha = true;
             short bottomBg = -1;
 
-            if (y + 1 < imgHeight) {
-                int bottomIndex = ((y + 1) * imgWidth + x) * 4;
+            if (y + 1 < targetHeight && (currentY + 1) < imgHeight) {
+                int bottomIndex = ((currentY + 1) * imgWidth + currentX) * 4;
                 bottomAlpha = rawBytes[bottomIndex + 3] < 128;
                 if (!bottomAlpha) {
                     bottomBg = getClosestColor(rawBytes[bottomIndex], rawBytes[bottomIndex + 1], rawBytes[bottomIndex + 2]);
@@ -72,7 +84,6 @@ sprite drawing::loadPNG(const std::string& filePath) {
         }
     }
 
-    // Geheugen netjes vrijgeven!
     stbi_image_free(rawBytes);
     return sprite;
 }
@@ -105,4 +116,12 @@ void drawing::drawSprite(int startX, int startY, const sprite& sprite) {
         RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
     }
 #endif
+}
+
+void drawing::clearArea(int startX, int startY, int width, int height) {
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            mvaddch(startY + y, startX + x, ' '); // Overschrijf met een lege spatie
+        }
+    }
 }
