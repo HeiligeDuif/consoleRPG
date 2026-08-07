@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#include "stb_image.h"
-
 #include <nlohmann/json.hpp>
 #include <curses.h>
 
@@ -209,7 +207,38 @@ extern std::map<std::string, std::function<void()>> abilityAttributeAssigner;
 //extern std::map<std::string, int*> factionAssigner;
 //extern std::map<std::string, int*> regionAssigner;
 
+struct colorPixel {
+    short fgColor = -1;
+    short bgColor = -1;
+    bool transparent = true;
+};
 
+struct sprite {
+    int width = 0;
+    int height = 0;
+    std::vector<std::vector<colorPixel>> pixels;
+};
+
+struct ColorRGB { int r; int g; int b; short ncursesId; };
+
+const ColorRGB ANSI_PALETTE[16] = {
+    {0, 0, 0, COLOR_BLACK},          // 0: Zwart
+    {128, 0, 0, COLOR_RED},          // 1: Rood
+    {0, 128, 0, COLOR_GREEN},        // 2: Groen
+    {128, 128, 0, COLOR_YELLOW},      // 3: Geel
+    {0, 0, 128, COLOR_BLUE},         // 4: Blauw
+    {128, 0, 128, COLOR_MAGENTA},    // 5: Magenta
+    {0, 128, 128, COLOR_CYAN},       // 6: Cyaan
+    {192, 192, 192, COLOR_WHITE},    // 7: Lichtgrijs
+    {128, 128, 128, COLOR_BLACK},    // 8: Donkergrijs (Bright Black)
+    {255, 0, 0, COLOR_RED},          // 9: Felrood
+    {0, 255, 0, COLOR_GREEN},        // 10: Felgroen
+    {255, 255, 0, COLOR_YELLOW},     // 11: Felgeel
+    {0, 0, 255, COLOR_BLUE},         // 12: Felblauw
+    {255, 0, 255, COLOR_MAGENTA},   // 13: Felmagenta
+    {0, 255, 255, COLOR_CYAN},      // 14: Felcyaan
+    {255, 255, 255, COLOR_WHITE}     // 15: Wit
+};
 
 class gameManager
 {
@@ -354,4 +383,13 @@ private:
     gameManager& gm;
 };
 
+class drawing
+{
+public:
+    short getClosestColor(unsigned char r, unsigned char g, unsigned char b);
+    void drawSprite(int startX, int startY, const sprite& sprite);
+    sprite loadPNG(const std::string& filePath);
+private:
+
+};
 #endif

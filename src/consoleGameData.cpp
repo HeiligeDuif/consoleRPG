@@ -204,7 +204,16 @@ void gameDataCreation::setseed()
 
     util.yesOrNoFunction();
 
-    util.printAscii("warrior.txt");
+    drawing spriteDraw;
+    sprite playerSprite = spriteDraw.loadPNG("graphics/knight.png");
+    if (playerSprite.width == 0 || playerSprite.height == 0) {
+        endwin();
+        std::cerr << "Kon 'assets/player.png' niet laden of afbeelding is leeg!" << std::endl;
+        return;
+    }
+    spriteDraw.drawSprite(10, 20, playerSprite);
+    spriteDraw.drawSprite(30, 20, playerSprite);
+    refresh();
 
     if (util.correctInput(menuStartY) == 'A')
     {

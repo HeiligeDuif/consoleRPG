@@ -15,8 +15,11 @@ int main()
     mousemask(BUTTON1_CLICKED, nullptr);
     keypad(stdscr, TRUE);
     cbreak();
+    curs_set(0);
     if (has_colors()) {
         start_color();
+        use_default_colors();
+
         int colorID = 0;
         for (int i = 0; i < 16; ++i) {
             for (int j = 0; j < 16; j++) {
