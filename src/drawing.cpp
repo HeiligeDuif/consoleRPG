@@ -77,10 +77,7 @@ sprite drawing::loadPNG(const std::string& filePath) {
     return sprite;
 }
 
-void drawing::drawSprite(int startX, int startY, const sprite& sprite)
-{
-    short pairIdCounter = 1;
-
+void drawing::drawSprite(int startX, int startY, const sprite& sprite) {
     for (size_t y = 0; y < sprite.pixels.size(); ++y) {
         for (size_t x = 0; x < sprite.pixels[y].size(); ++x) {
             const colorPixel& pixel = sprite.pixels[y][x];
@@ -89,12 +86,23 @@ void drawing::drawSprite(int startX, int startY, const sprite& sprite)
                 continue;
             }
 
-            short pair = pairIdCounter++;
-            init_pair(pair, pixel.fgColor, pixel.bgColor);
+            // Gebruik -1 (transparant) als 0 (zwart) voor de indexering
+            short fg = (pixel.fgColor < 0) ? 0 : pixel.fgColor;
+            short bg = (pixel.bgColor < 0) ? 0 : pixel.bgColor;
+
+            // Bereken welk ID dit is in jouw 16x16 matrix!
+            short pair = (fg * 16) + bg + 1;
 
             attron(COLOR_PAIR(pair));
             mvprintw(startY + static_cast<int>(y), startX + static_cast<int>(x), "%s", UPPER_BLOCK);
             attroff(COLOR_PAIR(pair));
         }
     }
+#ifdef _WIN32
+    HWND hwnd = GetActiveWindow();
+    if (hwnd != NULL) {
+        SetFocus(hwnd);
+        RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+    }
+#endif
 }

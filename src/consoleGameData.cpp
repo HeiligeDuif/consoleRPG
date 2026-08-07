@@ -79,9 +79,9 @@ void gameDataCreation::loadCharacters()
 
     for (const auto& c : gm.characters) {
         printw("Succesfully loaded characters: %s", c.name.c_str());
-        attron(COLOR_PAIR(1));
+        attron(COLOR_PAIR(17));
         printw("(max HP : % d) \n", c.hpMax);
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(17));
         wait(20);
         refresh();
     }

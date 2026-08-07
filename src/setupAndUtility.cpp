@@ -41,6 +41,7 @@ char  setupAndUtility::correctInput(int menuStartY)
     bool succesfulInput = false;
     while (true)
     {
+        move(5, 0);
         int input = getch();
         if (input == KEY_MOUSE)
         {
@@ -69,9 +70,10 @@ char  setupAndUtility::correctInput(int menuStartY)
             {
                 if (i == gm.charPossibilities.size() - 1)
                 {
-                    attron(COLOR_PAIR(1));
-                    printw("Please enter an available value.\n");
-                    attroff(COLOR_PAIR(1));
+                    attron(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
+                    mvprintw(7, 30, "Please enter an available value.");
+                    attroff(COLOR_PAIR((COLOR_RED * 16) + COLOR_BLACK + 1));
+                    refresh();
                     succesfulInput = false;
                 }
             }

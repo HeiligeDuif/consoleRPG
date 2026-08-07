@@ -3,6 +3,7 @@
 int main()
 {
     setlocale(LC_ALL, "");
+
     initscr();
 
 #ifdef PDC_WIDE
